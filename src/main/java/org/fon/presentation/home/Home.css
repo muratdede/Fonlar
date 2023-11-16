@@ -1,0 +1,204 @@
+.root {
+    -fx-background-color: #F7F7F7;
+}
+
+.table-view1 {
+    -fx-background-color: #F7F7F7;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+    -fx-border-color: #282830;
+}
+
+.table-view1 .column-header,
+.table-view1 .column-header .filler,
+.table-view1 .column-header-background .filler {
+    -fx-background-color: #CCCCCC;
+    -fx-max-height: 40;
+    -fx-pref-height: 40;
+    -fx-min-height: 0;
+    -fx-padding: 0px 0px 0px 5px;
+}
+
+.table-view1 .column-header .label{
+    -fx-font-size: 13px;
+    -fx-text-fill: #000;
+    -fx-font-weight: bold;
+}
+
+.table-view1 .table-cell{
+    -fx-text-fill: #000;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+.table-view1 .table-row-cell: odd{
+    -fx-background-color: #DFE1E5;
+}
+.table-view1 .table-row-cell: even{
+    -fx-background-color: #F7F7F7;
+}
+
+.table-view1 .table-row-cell {
+    -fx-cell-size: 35px;
+}
+
+.table-view1 *.scroll-bar:horizontal *.increment-button,
+.table-view1 *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view1 *.scroll-bar:horizontal *.increment-arrow,
+.table-view1 *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+.table-view1 *.scroll-bar:vertical *.increment-button,
+.table-view1 *.scroll-bar:vertical *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view1 *.scroll-bar:vertical *.increment-arrow,
+.table-view1 *.scroll-bar:vertical *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+.table-view1 .table-row-cell:selected {
+
+}
+.table-view1 .table-row-cell:selected .text {
+    -fx-fill: #000;
+}
+
+.headless .column-header,
+.headless .column-header-background,
+.headless .column-header .filler,
+.headless .column-header-background .filler {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}
+
+.combo-box,
+.combo-box .list-view {
+    -fx-background-color: #F7F7F7;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-border-width: 2px;
+    -fx-border-color: #282830;
+}
+
+.combo-box .cell{
+    -fx-background-color: #F7F7F7;
+    -fx-font-size: 13px;
+}
+
+.combo-box .arrow-button{
+    -fx-background-color: #DFE1E5;
+}
+
+.combo-box .cell:selected {
+    -fx-background-color: #DFE1E5;
+    -fx-text-fill: #000;
+}
+
+.combo-box .cell:hover {
+    -fx-background-color: #CCCCCC;
+    -fx-text-fill: #000;
+}
+
+.combo-box *.scroll-bar: vertical *.increment-button,
+.combo-box *.scroll-bar: vertical *.decrement-button {
+    -fx-background-color: transparent;
+	-fx-padding:0 20 0 0;
+}
+
+.combo-box *.scroll-bar: vertical *.increment-arrow,
+.combo-box *.scroll-bar: vertical *.decrement-arrow {
+	-fx-shape: null;
+	-fx-padding: 0;
+}
+
+.combo-box *.scroll-bar: horizontal *.increment-button,
+.combo-box *.scroll-bar: horizontal *.decrement-button,
+.combo-box *.scroll-bar: horizontal *.increment-arrow,
+.combo-box *.scroll-bar: horizontal *.decrement-arrow{
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+.combo-box *.scroll-bar: vertical *.thumb{
+    -fx-background-color: #DFE1E5;
+}
+
+.combo-box *.scroll-bar: vertical:hover .thumb{
+     -fx-background-color: #D0D0D0;
+}
+
+.combo-box *.scroll-bar: vertical:pressed .thumb{
+     -fx-background-color: #AAAAAA;
+}
+
+.combo-box *.scroll-bar: vertical *.track{
+    -fx-background-color: #F5F5F5;
+}
+
+.text-field {
+   -fx-background-color: #DFE1E5;
+   -fx-font-size: 14px;
+   -fx-border-color: #282830;
+}
+
+.text {
+    -fx-fill: #000;
+    -fx-font-size: 13px;
+    -fx-font-family: "Bahnschrift Condensed";
+}
+
+.label1 {
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-radius: 3px;
+}
+
+.button1 {
+    -fx-background-color: #DFE1E5;
+}
+
+.button1:hover {
+    -fx-background-color: #C7C7C7;
+}
+
+.button1:pressed {
+    -fx-background-color: #AAAAAA;
+}
+
+.selected-button1 {
+    -fx-background-color: #C7C7C7;
+}
+
+.selected-button1:hover {
+    -fx-background-color: #C7C7C7;
+}
+
+.selected-button1:pressed {
+    -fx-background-color: #AAAAAA;
+}

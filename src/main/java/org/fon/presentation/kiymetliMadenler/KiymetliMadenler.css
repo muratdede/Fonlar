@@ -1,0 +1,39 @@
+
+.table-view1 *.scroll-bar: vertical *.increment-button,
+.table-view1 *.scroll-bar: vertical *.decrement-button {
+    -fx-background-color: transparent;
+	-fx-padding:0 15 0 0;
+}
+
+.table-view1 *.scroll-bar: vertical *.increment-arrow,
+.table-view1 *.scroll-bar: vertical *.decrement-arrow {
+	-fx-shape: null;
+	-fx-padding: 0;
+}
+
+.table-view1 *.scroll-bar: horizontal *.increment-button,
+.table-view1 *.scroll-bar: horizontal *.decrement-button,
+.table-view1 *.scroll-bar: horizontal *.increment-arrow,
+.table-view1 *.scroll-bar: horizontal *.decrement-arrow{
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+.table-view1 *.scroll-bar: vertical *.thumb{
+    -fx-background-color: #DFE1E5;
+}
+
+.table-view1 *.scroll-bar: vertical:hover .thumb{
+     -fx-background-color: #D0D0D0;
+}
+
+.table-view1 *.scroll-bar: vertical:pressed .thumb{
+     -fx-background-color: #AAAAAA;
+}
+
+.table-view1 *.scroll-bar: vertical *.track{
+    -fx-background-color: #F5F5F5;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="root" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.home.HomePresenter">
+   <center>
+      <AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0">
+         <BorderPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </BorderPane.margin>
+         <AnchorPane fx:id="popup_pane" disable="true" layoutX="509.0" layoutY="131.0" prefHeight="1.0" prefWidth="1.0" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="150.0" />
+      </AnchorPane>
+   </center>
+   <bottom>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1200.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <Button fx:id="total" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="120.0" styleClass="selected-button1" text="TOTAL" />
+         <Button fx:id="hisseFonlari" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="150.0" styleClass="button1" text="HİSSE FONLARI" />
+         <Button fx:id="kiymetliMadenler" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" styleClass="button1" text="KIYMETLİ MADENLER" />
+         <Button fx:id="degisken" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="120.0" styleClass="button1" text="DEĞİŞKEN" />
+         <Button fx:id="karma" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="120.0" styleClass="button1" text="KARMA" />
+         <Button fx:id="fonSepeti" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="150.0" styleClass="button1" text="FON SEPETİ" />
+         <Button fx:id="katilim" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="120.0" styleClass="button1" text="KATILIM" />
+         <Button fx:id="paraPiyasasi" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="150.0" styleClass="button1" text="PARA PİYASASI" />
+         <Button fx:id="islemGecmisi" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="150.0" styleClass="button1" text="İŞLEM GEÇMİŞİ" />
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+</BorderPane>
