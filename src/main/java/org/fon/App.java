@@ -15,6 +15,8 @@ import java.util.Locale;
 
 public class App extends Application {
 
+    private static HomePresenter homePresenter = null;
+
     public static void main(String[] args) {
         launch();
     }
@@ -27,6 +29,7 @@ public class App extends Application {
 
         HomeView homeView = new HomeView();
         Scene scene = new Scene(homeView.getView());
+        homePresenter = (HomePresenter) homeView.getPresenter();
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Tefas Fon Yardımcısı");
@@ -39,5 +42,9 @@ public class App extends Application {
     @Override
     public void stop() {
 
+    }
+
+    public static void showPopup(Pane pane) {
+        homePresenter.showPopup(pane);
     }
 }

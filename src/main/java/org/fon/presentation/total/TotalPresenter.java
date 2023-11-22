@@ -68,9 +68,6 @@ public class TotalPresenter implements Initializable, IButtonPage {
     private TableView<TotalElement> table1;
 
     @FXML
-    private AnchorPane popup_pane;
-
-    @FXML
     public ComboBox<String> categoryComboBox;
     @FXML
     public TextField nameTextField;
@@ -154,11 +151,14 @@ public class TotalPresenter implements Initializable, IButtonPage {
     }
 
     public void updatePrices(ActionEvent event) {
-        popup_pane.getChildren().clear();
-        popup_pane.getChildren().add(loadingPane);
+        updateButton.setDisable(true);
+        App.showPopup(loadingPane);
         new Thread(()-> {
             databaseHandler.updatePrices();
-            Platform.runLater(()-> popup_pane.getChildren().clear());
+            Platform.runLater(() -> {
+                updateButton.setDisable(false);
+                App.showPopup(null);
+            });
         }).start();
     }
 

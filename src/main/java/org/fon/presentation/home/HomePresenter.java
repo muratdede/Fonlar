@@ -2,6 +2,7 @@ package org.fon.presentation.home;
 
 
 import com.airhacks.afterburner.views.FXMLView;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,6 +51,9 @@ public class HomePresenter implements Initializable, IButtonPage {
     private Button paraPiyasasi;
     @FXML
     private Button islemGecmisi;
+
+    @FXML
+    private AnchorPane popup_pane;
 
     private HashMap<Button, FXMLView> buttonFXMLViewHashMap = new HashMap<>();
     private IButtonPage currentButtonPage = null;
@@ -102,6 +106,7 @@ public class HomePresenter implements Initializable, IButtonPage {
         
         content.getChildren().clear();
         content.getChildren().add(fxmlView.getView());
+        content.getChildren().add(popup_pane);
     }
 
     private void resetButtonColors() {
@@ -114,6 +119,12 @@ public class HomePresenter implements Initializable, IButtonPage {
     private void selectButtonColor(Button button) {
         button.getStyleClass().remove("button1");
         button.getStyleClass().add("selected-button1");
+    }
+
+    public void showPopup(Pane pane) {
+        popup_pane.getChildren().clear();
+        if (pane != null)
+            popup_pane.getChildren().add(pane);
     }
 }
 
