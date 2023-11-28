@@ -41,6 +41,12 @@ public class LogHandler {
         }
     }
 
+    public static void println(String string) {
+        LogHandler logHandler = LogHandler.getInstance();
+
+        logHandler.stream.print(logHandler.dtf.format(LocalDateTime.now()) + ": ");
+        logHandler.stream.println(string);
+    }
     public static void printStackTrace(Throwable e) {
         LogHandler logHandler = LogHandler.getInstance();
 

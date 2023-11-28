@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,8 +22,11 @@ public class WebPageReader {
         try {
             response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             LogHandler.printStackTrace(e);
+            return null;
+        } catch (IOException e) {
+            LogHandler.println("Connection Failed!");
             return null;
         }
 
