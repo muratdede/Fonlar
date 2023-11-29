@@ -4,13 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.fon.handlers.LogHandler;
-import org.fon.handlers.WebPageReader;
 import org.fon.presentation.home.HomePresenter;
 import org.fon.presentation.home.HomeView;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.Locale;
 
 public class App extends Application {

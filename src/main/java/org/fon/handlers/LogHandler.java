@@ -35,7 +35,7 @@ public class LogHandler {
         }
 
         try {
-            stream = new PrintStream(fileName, StandardCharsets.UTF_8);
+            stream = new PrintStream(fileName, "UTF-8");
         } catch (IOException ignored) {
 
         }

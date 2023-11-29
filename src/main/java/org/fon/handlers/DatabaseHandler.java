@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.fon.models.FonElement;
 
+import java.io.IOException;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -93,14 +94,18 @@ public class DatabaseHandler {
 
         for (List<FonElement> fonElementList : fonElementListMap.values()) {
             for (FonElement fonElement : fonElementList) {
-                String pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
-                if (pageContents == null)
+                String pageContents = null;
+                try {
+                    pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
+                } catch (IOException e) {
+                    LogHandler.printStackTrace(e);
                     continue;
+                }
 
                 Double price = fonElement.getTodayPrice();
                 Double percentage = fonElement.getChangePercentage();
 
-                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />\\r\\n.*?\\r\\n.*?<span>.*?</span>");
+                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />.*?<span>.*?</span>");
                 Matcher priceMatcher = pricePattern.matcher(pageContents);
                 if (priceMatcher.find()) {
                     String token = priceMatcher.group();
@@ -112,7 +117,7 @@ public class DatabaseHandler {
                         continue;
                 }
 
-                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />\\r\\n.*?\\r\\n.*?<span>%.*?</span>");
+                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />.*?<span>%.*?</span>");
                 Matcher percentageMatcher = percentagePattern.matcher(pageContents);
                 if (percentageMatcher.find()) {
                     String token = percentageMatcher.group();
