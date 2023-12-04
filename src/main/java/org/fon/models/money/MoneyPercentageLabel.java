@@ -1,4 +1,4 @@
-package org.fon.models;
+package org.fon.models.money;
 
 import javafx.beans.binding.Bindings;
 

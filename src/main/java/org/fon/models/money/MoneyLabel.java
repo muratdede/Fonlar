@@ -1,4 +1,4 @@
-package org.fon.models;
+package org.fon.models.money;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,8 +9,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.text.DecimalFormat;
@@ -23,7 +22,7 @@ public class MoneyLabel extends Label {
     protected final DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(new Locale("tr", "TR"));
     protected final DoubleProperty valueProperty = new SimpleDoubleProperty();
 
-    private final Stage popup = new Stage();
+    private final Popup popup = new Popup();
     private final Timeline popupTimeline;
     protected final DecimalFormat longFormatter = (DecimalFormat) NumberFormat.getInstance(new Locale("tr", "TR"));
 
@@ -41,46 +40,40 @@ public class MoneyLabel extends Label {
         createTextBinding();
 
         //---------
-        popup.setResizable(false);
-        popup.initStyle(StageStyle.TRANSPARENT);
-
         Label label = new Label();
         Scene scene = new Scene(label);
 
         scene.setFill(Color.TRANSPARENT);
+        popup.getContent().add(label);
 
-        popupTimeline = new Timeline(new KeyFrame(new Duration(1500), event -> {
-            Platform.runLater(() -> {
-                synchronized (this) {
-                    String prefix = "";
-                    if (this.getText().contains("-"))
-                        prefix = this.getText().substring(0, 2);
-                    else
-                        prefix = this.getText().substring(0, 1);
+        popupTimeline = new Timeline(new KeyFrame(new Duration(1500), event -> Platform.runLater(() -> {
+            synchronized (this) {
+                String prefix;
+                if (this.getText().contains("-"))
+                    prefix = this.getText().substring(0, 2);
+                else
+                    prefix = this.getText().substring(0, 1);
 
-                    label.setText(prefix + longFormatter.format(Math.abs(valueProperty.get())));
-                    label.setTextFill(this.getTextFill());
+                label.setText(prefix + longFormatter.format(Math.abs(valueProperty.get())));
+                label.setTextFill(this.getTextFill());
 
-                    popup.setScene(scene);
-
-                    popup.show();
-                }
-            });
-        }));
+                popup.show(this, popup.getAnchorX(), popup.getAnchorY());
+            }
+        })));
     }
 
     private void createHoverDisplayBinding() {
-        setOnMouseEntered(mouseEvent -> {
-            popup.setX(mouseEvent.getScreenX() + 10);
-            popup.setY(mouseEvent.getScreenY() + 5);
+        setOnMouseEntered(mouseEvent -> popupTimeline.playFromStart());
 
-            popupTimeline.playFromStart();
+        setOnMouseMoved(mouseEvent -> {
+            popup.setAnchorX(mouseEvent.getScreenX() + 15);
+            popup.setAnchorY(mouseEvent.getScreenY() + 5);
         });
 
         setOnMouseExited(mouseEvent -> {
             synchronized (this) {
                 popupTimeline.stop();
-                popup.close();
+                popup.hide();
             }
         });
     }

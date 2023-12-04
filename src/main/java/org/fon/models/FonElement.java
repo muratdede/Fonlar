@@ -2,6 +2,9 @@ package org.fon.models;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
+import org.fon.models.money.MoneyLabel;
+import org.fon.models.money.MoneyPercentageLabel;
+import org.fon.models.money.MoneyProfitLabel;
 
 public class FonElement {
     private final StringProperty category = new SimpleStringProperty(this, "category");
