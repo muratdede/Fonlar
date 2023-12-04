@@ -67,9 +67,9 @@ public class DatabaseHandler {
             if (tmpFonElement.getName().equals(fonElement.getName())) {
                 Double newTotalPrice = tmpFonElement.getPrice() * tmpFonElement.getCount() + fonElement.getPrice() * fonElement.getCount();
 
-                tmpFonElement.setCount(tmpFonElement.getCount() + fonElement.getCount());
+                tmpFonElement.setCount(Math.min(tmpFonElement.getCount() + fonElement.getCount(), 0));
 
-                if (tmpFonElement.getCount() <= 0) {
+                if ((tmpFonElement.getCount() == 0) && (tmpFonElement.getDemand() <= 0.001)) {
                     fonElementList.remove(tmpFonElement);
                     deleteFon(tmpFonElement);
                     return;
@@ -83,7 +83,8 @@ public class DatabaseHandler {
             }
         }
 
-        if (fonElement.getCount() > 0) {
+        fonElement.setCount(Math.max(fonElement.getCount(), 0));
+        if ((fonElement.getCount() > 0) || (fonElement.getDemand() >= 0.001)) {
             fonElementList.add(fonElement);
             insertFon(fonElement);
         }

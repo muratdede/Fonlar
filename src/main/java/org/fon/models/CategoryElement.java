@@ -59,25 +59,25 @@ public class CategoryElement {
         setDemand(demandLabel);
 
         fonElementList.forEach(fonElement -> {
-            fonElement.totalPriceValueProperty.addListener(listener);
-            fonElement.totalTodayPriceValueProperty.addListener(listener);
-            fonElement.changeValueProperty.addListener(listener);
-            fonElement.demandValueProperty.addListener(listener);
+            fonElement.totalPriceProperty().get().valueProperty().addListener(listener);
+            fonElement.totalTodayPriceProperty().get().valueProperty().addListener(listener);
+            fonElement.changeProperty().get().valueProperty().addListener(listener);
+            fonElement.demandProperty().get().valueProperty().addListener(listener);
         });
         fonElementList.addListener((ListChangeListener<? super FonElement>) listChange -> {
             update();
             while (listChange.next()) {
                 listChange.getAddedSubList().forEach((fonElement -> {
-                    fonElement.totalPriceValueProperty.addListener(listener);
-                    fonElement.totalTodayPriceValueProperty.addListener(listener);
-                    fonElement.changeValueProperty.addListener(listener);
-                    fonElement.demandValueProperty.addListener(listener);
+                    fonElement.totalPriceProperty().get().valueProperty().addListener(listener);
+                    fonElement.totalTodayPriceProperty().get().valueProperty().addListener(listener);
+                    fonElement.changeProperty().get().valueProperty().addListener(listener);
+                    fonElement.demandProperty().get().valueProperty().addListener(listener);
                 }));
                 listChange.getRemoved().forEach((fonElement -> {
-                    fonElement.totalPriceValueProperty.removeListener(listener);
-                    fonElement.totalTodayPriceValueProperty.removeListener(listener);
-                    fonElement.changeValueProperty.removeListener(listener);
-                    fonElement.demandValueProperty.removeListener(listener);
+                    fonElement.totalPriceProperty().get().valueProperty().removeListener(listener);
+                    fonElement.totalTodayPriceProperty().get().valueProperty().removeListener(listener);
+                    fonElement.changeProperty().get().valueProperty().removeListener(listener);
+                    fonElement.demandProperty().get().valueProperty().removeListener(listener);
                 }));
             }
         });

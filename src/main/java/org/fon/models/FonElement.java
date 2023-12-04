@@ -1,173 +1,40 @@
 package org.fon.models;
 
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.Label;
 import javafx.beans.property.*;
-import javafx.scene.paint.Color;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class FonElement {
-    private StringProperty category = new SimpleStringProperty(this, "category");
-    private StringProperty name = new SimpleStringProperty(this, "name");
-    private IntegerProperty count = new SimpleIntegerProperty(this, "count");
-    private ObjectProperty price = new SimpleObjectProperty(this, "price");
-    private ObjectProperty totalPrice = new SimpleObjectProperty(this, "totalPrice");
-    private ObjectProperty todayPrice = new SimpleObjectProperty(this, "todayPrice");
-    private ObjectProperty totalTodayPrice = new SimpleObjectProperty(this, "totalTodayPrice");
-    private ObjectProperty profit = new SimpleObjectProperty(this, "profit");
-    private ObjectProperty profitPercentage = new SimpleObjectProperty(this, "profitPercentage");
-    private ObjectProperty change = new SimpleObjectProperty(this, "change");
-    private ObjectProperty changePercentage = new SimpleObjectProperty(this, "changePercentage");
-    private ObjectProperty demand = new SimpleObjectProperty(this, "demand");
-    private StringProperty lastUpdate = new SimpleStringProperty(this, "lastUpdate");
+    private final StringProperty category = new SimpleStringProperty(this, "category");
+    private final StringProperty name = new SimpleStringProperty(this, "name");
+    private final IntegerProperty count = new SimpleIntegerProperty(this, "count");
+    private final ObjectProperty<MoneyLabel> price = new SimpleObjectProperty<>(this, "price");
+    private final ObjectProperty<MoneyLabel> totalPrice = new SimpleObjectProperty<>(this, "totalPrice");
+    private final ObjectProperty<MoneyLabel> todayPrice = new SimpleObjectProperty<>(this, "todayPrice");
+    private final ObjectProperty<MoneyLabel> totalTodayPrice = new SimpleObjectProperty<>(this, "totalTodayPrice");
+    private final ObjectProperty<MoneyLabel> profit = new SimpleObjectProperty<>(this, "profit");
+    private final ObjectProperty<MoneyLabel> profitPercentage = new SimpleObjectProperty<>(this, "profitPercentage");
+    private final ObjectProperty<MoneyLabel> change = new SimpleObjectProperty<>(this, "change");
+    private final ObjectProperty<MoneyLabel> changePercentage = new SimpleObjectProperty<>(this, "changePercentage");
+    private final ObjectProperty<MoneyLabel> demand = new SimpleObjectProperty<>(this, "demand");
+    private final StringProperty lastUpdate = new SimpleStringProperty(this, "lastUpdate");
 
-    private Label priceLabel = new Label();
-    private Label totalPriceLabel = new Label();
-    private Label todayPriceLabel = new Label();
-    private Label totalTodayPriceLabel = new Label();
-    private Label profitLabel = new Label();
-    private Label profitPercentageLabel = new Label();
-    private Label changePercentageLabel = new Label();
-    private Label changeLabel = new Label();
-    private Label demandLabel = new Label();
-
-    DoubleProperty priceValueProperty = new SimpleDoubleProperty();
-    DoubleProperty totalPriceValueProperty = new SimpleDoubleProperty();
-    DoubleProperty todayPriceValueProperty = new SimpleDoubleProperty();
-    DoubleProperty totalTodayPriceValueProperty = new SimpleDoubleProperty();
-    DoubleProperty profitValueProperty = new SimpleDoubleProperty();
-    DoubleProperty profitPercentageValueProperty = new SimpleDoubleProperty();
-    DoubleProperty changePercentageValueProperty = new SimpleDoubleProperty();
-    DoubleProperty changeValueProperty = new SimpleDoubleProperty();
-    DoubleProperty demandValueProperty = new SimpleDoubleProperty();
 
     public FonElement (String category, String name, Integer count, Double price, Double todayPrice, Double changePercentage, Double demand, String lastUpdate) {
-        this.price.set(priceLabel);
-        this.totalPrice.set(totalPriceLabel);
-        this.todayPrice.set(todayPriceLabel);
-        this.totalTodayPrice.set(totalTodayPriceLabel);
-        this.profit.set(profitLabel);
-        this.profitPercentage.set(profitPercentageLabel);
-        this.changePercentage.set(changePercentageLabel);
-        this.change.set(changeLabel);
-        this.demand.set(demandLabel);
+        this.price.set(new MoneyLabel());
+        this.totalPrice.set(new MoneyLabel());
+        this.todayPrice.set(new MoneyLabel());
+        this.totalTodayPrice.set(new MoneyLabel());
+        this.profit.set(new MoneyProfitLabel());
+        this.profitPercentage.set(new MoneyPercentageLabel());
+        this.changePercentage.set(new MoneyPercentageLabel());
+        this.change.set(new MoneyProfitLabel());
+        this.demand.set(new MoneyLabel());
 
-        totalPriceValueProperty.bind(Bindings.multiply(this.count, priceValueProperty));
-        totalTodayPriceValueProperty.bind(Bindings.multiply(this.count, todayPriceValueProperty));
-        profitValueProperty.bind(Bindings.subtract(totalTodayPriceValueProperty, totalPriceValueProperty));
-        profitPercentageValueProperty.bind(Bindings.multiply(Bindings.divide(profitValueProperty, totalPriceValueProperty), 100));
-        changeValueProperty.bind(Bindings.subtract(totalTodayPriceValueProperty, Bindings.divide(totalTodayPriceValueProperty, Bindings.add(1, Bindings.divide(changePercentageValueProperty, 100)))));
-
-        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(new Locale("tr", "TR"));
-        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-        symbols.setGroupingSeparator('.');
-        formatter.setDecimalFormatSymbols(symbols);
-        formatter.setMaximumFractionDigits(2);
-        formatter.setMinimumFractionDigits(2);
-
-        priceLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = priceValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, priceValueProperty));
-
-        totalPriceLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = totalPriceValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, totalPriceValueProperty));
-
-        todayPriceLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = todayPriceValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, todayPriceValueProperty));
-
-        totalTodayPriceLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = totalTodayPriceValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, totalTodayPriceValueProperty));
-
-        profitLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = profitValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, profitValueProperty));
-
-        profitPercentageLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = profitPercentageValueProperty.get();
-            if (Double.isNaN(percentage)) {
-                return "%0,00";
-            } else if (percentage < 0) {
-                return "-%" + formatter.format(-percentage);
-            } else {
-                return "%" + formatter.format(percentage);
-            }
-        }, profitPercentageValueProperty));
-
-        changeLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double change = changeValueProperty.get();
-            if (Double.isNaN(change)) {
-                return "₺0,00";
-            } else if (change < 0) {
-                return "-₺" + formatter.format(-change);
-            } else {
-                return "₺" + formatter.format(change);
-            }
-        }, changeValueProperty));
-
-        changePercentageLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = changePercentageValueProperty.get();
-            if (Double.isNaN(percentage)) {
-                return "%0,00";
-            } else if (percentage < 0) {
-                return "-%" + formatter.format(-percentage);
-            } else {
-                return "%" + formatter.format(percentage);
-            }
-        }, changePercentageValueProperty));
-
-        demandLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-            double value = demandValueProperty.get();
-            if (value < 0) {
-                return "-₺" + formatter.format(-value);
-            } else {
-                return "₺" + formatter.format(value);
-            }
-        }, demandValueProperty));
-
-        profitLabel.textFillProperty().bind(Bindings.when(Bindings.lessThan(profitValueProperty, 0))
-                .then(Color.RED)
-                .otherwise(Color.GREEN));
-        profitPercentageLabel.textFillProperty().bind(Bindings.when(Bindings.lessThan(profitPercentageValueProperty, 0))
-                .then(Color.RED)
-                .otherwise(Color.GREEN));
-        changeLabel.textFillProperty().bind(Bindings.when(Bindings.lessThan(changeValueProperty, 0))
-                .then(Color.RED)
-                .otherwise(Color.GREEN));
-        changePercentageLabel.textFillProperty().bind(Bindings.when(Bindings.lessThan(changePercentageValueProperty, 0))
-                .then(Color.RED)
-                .otherwise(Color.GREEN));
+        totalPrice.get().valueProperty().bind(Bindings.multiply(this.count, this.price.get().valueProperty()));
+        totalTodayPrice.get().valueProperty().bind(Bindings.multiply(this.count, this.todayPrice.get().valueProperty()));
+        profit.get().valueProperty().bind(Bindings.subtract(totalTodayPrice.get().valueProperty(), totalPrice.get().valueProperty()));
+        profitPercentage.get().valueProperty().bind(Bindings.multiply(Bindings.divide(profit.get().valueProperty(), totalPrice.get().valueProperty()), 100));
+        change.get().valueProperty().bind(Bindings.subtract(totalTodayPrice.get().valueProperty(), Bindings.divide(totalTodayPrice.get().valueProperty(), Bindings.add(1, Bindings.divide(this.changePercentage.get().valueProperty(), 100)))));
 
         setCategory(category);
         setName(name);
@@ -215,112 +82,112 @@ public class FonElement {
         return countProperty().get();
     }
 
-    public ObjectProperty priceProperty() {
+    public ObjectProperty<MoneyLabel> priceProperty() {
         return price;
     }
 
     public void setPrice(Double value) {
-        priceValueProperty.set(value);
+        price.get().setValue(value);
     }
 
     public Double getPrice() {
-        return priceValueProperty.get();
+        return price.get().getValue();
     }
 
-    public ObjectProperty totalPriceProperty() {
+    public ObjectProperty<MoneyLabel> totalPriceProperty() {
         return totalPrice;
     }
 
     public void setTotalPrice(Double value) {
-        totalPriceValueProperty.set(value);
+        totalPrice.get().setValue(value);
     }
 
     public Double getTotalPrice() {
-        return totalPriceValueProperty.get();
+        return totalPrice.get().getValue();
     }
 
-    public ObjectProperty todayPriceProperty() {
+    public ObjectProperty<MoneyLabel> todayPriceProperty() {
         return todayPrice;
     }
 
     public void setTodayPrice(Double value) {
-        todayPriceValueProperty.set(value);
+        todayPrice.get().setValue(value);
     }
 
     public Double getTodayPrice() {
-        return todayPriceValueProperty.get();
+        return todayPrice.get().getValue();
     }
 
-    public ObjectProperty totalTodayPriceProperty() {
+    public ObjectProperty<MoneyLabel> totalTodayPriceProperty() {
         return totalTodayPrice;
     }
 
     public void setTotalTodayPrice(Double value) {
-        totalTodayPriceValueProperty.set(value);
+        totalTodayPrice.get().setValue(value);
     }
 
     public Double getTotalTodayPrice() {
-        return totalTodayPriceValueProperty.get();
+        return totalTodayPrice.get().getValue();
     }
 
-    public ObjectProperty profitProperty() {
+    public ObjectProperty<MoneyLabel> profitProperty() {
         return profit;
     }
 
     public void setProfit(Double value) {
-        profitValueProperty.set(value);
+        profit.get().setValue(value);
     }
 
     public Double getProfit() {
-        return profitValueProperty.get();
+        return profit.get().getValue();
     }
 
-    public ObjectProperty profitPercentageProperty() {
+    public ObjectProperty<MoneyLabel> profitPercentageProperty() {
         return profitPercentage;
     }
 
     public void setProfitPercentage(Double value) {
-        profitPercentageValueProperty.set(value);
+        profitPercentage.get().setValue(value);
     }
 
     public Double getProfitPercentage() {
-        return profitPercentageValueProperty.get();
+        return profitPercentage.get().getValue();
     }
 
-    public ObjectProperty changePercentageProperty() {
+    public ObjectProperty<MoneyLabel> changePercentageProperty() {
         return changePercentage;
     }
 
     public void setChangePercentage(Double value) {
-        changePercentageValueProperty.set(value);
+        changePercentage.get().setValue(value);
     }
 
     public Double getChangePercentage() {
-        return changePercentageValueProperty.get();
+        return changePercentage.get().getValue();
     }
 
-    public ObjectProperty changeProperty() {
+    public ObjectProperty<MoneyLabel> changeProperty() {
         return change;
     }
 
     public void setChange(Double value) {
-        changeValueProperty.set(value);
+        change.get().setValue(value);
     }
 
     public Double getChange() {
-        return changeValueProperty.get();
+        return change.get().getValue();
     }
 
-    public ObjectProperty demandProperty() {
+    public ObjectProperty<MoneyLabel> demandProperty() {
         return demand;
     }
 
     public void setDemand(Double value) {
-        demandValueProperty.set(value);
+        demand.get().setValue(value);
     }
 
     public Double getDemand() {
-        return demandValueProperty.get();
+        return demand.get().getValue();
     }
 
     public StringProperty lastUpdateProperty() {
