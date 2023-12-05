@@ -1,0 +1,11 @@
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-line-symbol {
+    -fx-background-color: transparent;
+}
+
+.axis-tick-mark {
+    -fx-stroke: transparent;
+}
