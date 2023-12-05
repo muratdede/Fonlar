@@ -1,4 +1,4 @@
-package org.fon.models;
+package org.fon.models.elements;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;

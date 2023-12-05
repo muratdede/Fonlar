@@ -11,14 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.fon.handlers.DatabaseHandler;
-import org.fon.models.CategoryElement;
-import org.fon.models.FonElement;
+import org.fon.models.elements.CategoryElement;
+import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
-import org.fon.models.TotalElement;
+import org.fon.models.elements.TotalElement;
 
 import javax.inject.Inject;
 import java.net.URL;

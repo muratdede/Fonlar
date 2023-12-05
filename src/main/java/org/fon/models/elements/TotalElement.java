@@ -1,4 +1,4 @@
-package org.fon.models;
+package org.fon.models.elements;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -16,8 +16,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-
-public class CategoryElement {
+public class TotalElement {
     private ObjectProperty category = new SimpleObjectProperty(this, "category");
     private ObjectProperty totalPrice = new SimpleObjectProperty(this, "totalPrice");
     private ObjectProperty todayTotalPrice = new SimpleObjectProperty(this, "todayTotalPrice");
@@ -44,12 +43,12 @@ public class CategoryElement {
     DoubleProperty changeValueProperty = new SimpleDoubleProperty();
     DoubleProperty demandValueProperty = new SimpleDoubleProperty();
 
-    private ObservableList<FonElement> fonElementList = null;
+    private ObservableList<CategoryElement> categoryElementList = null;
     private final InvalidationListener listener = observable -> update();
 
-    public CategoryElement(ObservableList<FonElement> fonElementList, String name) {
-        this.fonElementList = fonElementList;
-        setCategory(new Label(name));
+    public TotalElement(ObservableList<CategoryElement> categoryElementList) {
+        this.categoryElementList = categoryElementList;
+        setCategory(new Label("Toplam"));
         setTotalPrice(totalPriceLabel);
         setTodayTotalPrice(todayTotalPriceLabel);
         setProfit(profitLabel);
@@ -58,28 +57,25 @@ public class CategoryElement {
         setChange(changeLabel);
         setDemand(demandLabel);
 
-        fonElementList.forEach(fonElement -> {
-            fonElement.totalPriceProperty().get().valueProperty().addListener(listener);
-            fonElement.totalTodayPriceProperty().get().valueProperty().addListener(listener);
-            fonElement.changeProperty().get().valueProperty().addListener(listener);
-            fonElement.demandProperty().get().valueProperty().addListener(listener);
+        categoryElementList.forEach(fonElement -> {
+            fonElement.totalPriceProperty().addListener(listener);
+            fonElement.todayTotalPriceProperty().addListener(listener);
+            fonElement.changeProperty().addListener(listener);
+            fonElement.demandProperty().addListener(listener);
         });
-        fonElementList.addListener((ListChangeListener<? super FonElement>) listChange -> {
-            update();
-            while (listChange.next()) {
-                listChange.getAddedSubList().forEach((fonElement -> {
-                    fonElement.totalPriceProperty().get().valueProperty().addListener(listener);
-                    fonElement.totalTodayPriceProperty().get().valueProperty().addListener(listener);
-                    fonElement.changeProperty().get().valueProperty().addListener(listener);
-                    fonElement.demandProperty().get().valueProperty().addListener(listener);
-                }));
-                listChange.getRemoved().forEach((fonElement -> {
-                    fonElement.totalPriceProperty().get().valueProperty().removeListener(listener);
-                    fonElement.totalTodayPriceProperty().get().valueProperty().removeListener(listener);
-                    fonElement.changeProperty().get().valueProperty().removeListener(listener);
-                    fonElement.demandProperty().get().valueProperty().removeListener(listener);
-                }));
-            }
+        categoryElementList.addListener((ListChangeListener<? super CategoryElement>) listChange -> {
+            listChange.getAddedSubList().forEach((fonElement -> {
+                fonElement.totalPriceProperty().addListener(listener);
+                fonElement.todayTotalPriceProperty().addListener(listener);
+                fonElement.changeProperty().addListener(listener);
+                fonElement.demandProperty().addListener(listener);
+            }));
+            listChange.getRemoved().forEach((fonElement -> {
+                fonElement.totalPriceProperty().removeListener(listener);
+                fonElement.todayTotalPriceProperty().removeListener(listener);
+                fonElement.changeProperty().removeListener(listener);
+                fonElement.demandProperty().removeListener(listener);
+            }));
         });
 
         profitValueProperty.bind(Bindings.subtract(totalTodayPriceValueProperty, totalPriceValueProperty));
@@ -182,11 +178,11 @@ public class CategoryElement {
         Double tmpChange = 0.0;
         Double tmpDemand = 0.0;
 
-        for (FonElement fonElement : fonElementList) {
-            tmpTotalPrice += fonElement.getTotalPrice();
-            tmpTotalTodayPrice += fonElement.getTotalTodayPrice();
-            tmpChange += fonElement.getChange();
-            tmpDemand += fonElement.getDemand();
+        for (CategoryElement categoryElementElement : categoryElementList) {
+            tmpTotalPrice += categoryElementElement.totalPriceProperty().get().getValue();
+            tmpTotalTodayPrice += categoryElementElement.todayTotalPriceProperty().get().getValue();
+            tmpChange += categoryElementElement.changeProperty().get().getValue();
+            tmpDemand += categoryElementElement.demandProperty().get().getValue();
         }
 
         totalPriceValueProperty.set(tmpTotalPrice);
@@ -290,5 +286,4 @@ public class CategoryElement {
     public Object getDemand() {
         return demandProperty().get();
     }
-
 }

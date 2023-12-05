@@ -3,7 +3,7 @@ package org.fon.handlers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.fon.models.FonElement;
+import org.fon.models.elements.FonElement;
 
 import java.io.IOException;
 import java.sql.*;
