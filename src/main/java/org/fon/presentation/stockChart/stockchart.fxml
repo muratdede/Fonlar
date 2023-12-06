@@ -4,7 +4,7 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 
-<LineChart fx:id="chart" legendVisible="false" prefHeight="350.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.stockChart.StockChartPresenter">
+<LineChart fx:id="chart" legendVisible="false" prefHeight="350.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.stockChart.StockChartPresenter">
   <xAxis>
     <CategoryAxis side="BOTTOM" tickLabelsVisible="false" visible="false" fx:id="xAxis" />
   </xAxis>
