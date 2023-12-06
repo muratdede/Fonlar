@@ -67,7 +67,7 @@ public class DatabaseHandler {
             if (tmpFonElement.getName().equals(fonElement.getName())) {
                 Double newTotalPrice = tmpFonElement.getPrice() * tmpFonElement.getCount() + fonElement.getPrice() * fonElement.getCount();
 
-                tmpFonElement.setCount(Math.min(tmpFonElement.getCount() + fonElement.getCount(), 0));
+                tmpFonElement.setCount(Math.max(tmpFonElement.getCount() + fonElement.getCount(), 0));
 
                 if ((tmpFonElement.getCount() <= 0) && (tmpFonElement.getDemand() <= 0.001)) {
                     fonElementList.remove(tmpFonElement);
@@ -75,7 +75,9 @@ public class DatabaseHandler {
                     return;
                 }
 
-                tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
+                if (tmpFonElement.getCount() != 0)
+                    tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
+
                 tmpFonElement.setDemand(tmpFonElement.getDemand() + fonElement.getDemand());
 
                 updateFon(tmpFonElement);
@@ -91,8 +93,6 @@ public class DatabaseHandler {
     }
 
     public void updatePrices() {
-        char decimalSeparator = ((DecimalFormat) DecimalFormat.getInstance()).getDecimalFormatSymbols().getDecimalSeparator();
-
         for (List<FonElement> fonElementList : fonElementListMap.values()) {
             for (FonElement fonElement : fonElementList) {
                 String pageContents = null;
