@@ -69,7 +69,7 @@ public class DatabaseHandler {
 
                 tmpFonElement.setCount(Math.min(tmpFonElement.getCount() + fonElement.getCount(), 0));
 
-                if ((tmpFonElement.getCount() == 0) && (tmpFonElement.getDemand() <= 0.001)) {
+                if ((tmpFonElement.getCount() <= 0) && (tmpFonElement.getDemand() <= 0.001)) {
                     fonElementList.remove(tmpFonElement);
                     deleteFon(tmpFonElement);
                     return;
