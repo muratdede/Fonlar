@@ -7,7 +7,6 @@ import org.fon.models.elements.FonElement;
 
 import java.io.IOException;
 import java.sql.*;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -78,7 +77,7 @@ public class DatabaseHandler {
                 if (tmpFonElement.getCount() != 0)
                     tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
 
-                tmpFonElement.setDemand(tmpFonElement.getDemand() + fonElement.getDemand());
+                tmpFonElement.setDemand(Math.max(tmpFonElement.getDemand() + fonElement.getDemand(), 0));
 
                 updateFon(tmpFonElement);
                 return;

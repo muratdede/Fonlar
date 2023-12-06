@@ -81,8 +81,8 @@ public class TotalPresenter implements Initializable, IButtonPage {
     @FXML
     public Button updateButton;
 
-    private ObservableList<CategoryElement> categoryElements = FXCollections.observableArrayList();
-    private ObservableList<TotalElement> totalElements = FXCollections.observableArrayList();
+    private final ObservableList<CategoryElement> categoryElements = FXCollections.observableArrayList();
+    private final ObservableList<TotalElement> totalElements = FXCollections.observableArrayList();
 
     private Pane loadingPane;
 
@@ -149,7 +149,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
         createPopUp();
     }
 
-    public void updatePrices(ActionEvent event) {
+    public void updatePrices(ActionEvent ignored) {
         updateButton.setDisable(true);
         App.showPopup(loadingPane);
         new Thread(()-> {
@@ -161,7 +161,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
         }).start();
     }
 
-    public void newEntry(ActionEvent actionEvent) {
+    public void newEntry(ActionEvent ignored) {
         FonElement fonElement = new FonElement(categoryComboBox.getSelectionModel().getSelectedItem(),
                 nameTextField.getText().toUpperCase(),
                 Integer.parseInt(countTextField.getText()),
