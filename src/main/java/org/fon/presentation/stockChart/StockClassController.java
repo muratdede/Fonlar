@@ -8,6 +8,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Tooltip;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,9 +36,13 @@ public class StockClassController implements Initializable {
             maxValue = Math.max((Double) series.getData().get(i).getYValue(), maxValue);
         };
 
-        yAxis.setLowerBound(minValue - minValue/10);
-        yAxis.setUpperBound(maxValue + maxValue/10);
-        yAxis.setTickUnit(((maxValue + maxValue/10) - (minValue - minValue/10)) / 5);
+        double lowerBound = minValue - minValue/10;
+        double upperBound = maxValue + maxValue/20;
+
+        yAxis.setLowerBound(lowerBound);
+        yAxis.setUpperBound(upperBound);
+        yAxis.setTickUnit((upperBound - lowerBound) / 5);
+        yAxis.setTickLabelFont(new Font(13));
 
         chart.getData().add(series);
 
