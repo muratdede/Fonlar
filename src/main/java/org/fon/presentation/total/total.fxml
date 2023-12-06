@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -46,8 +47,12 @@
                <String fx:value="table-view1" />
             </styleClass>
          </TableView>
-         <HBox prefHeight="160.0" prefWidth="1200.0" spacing="20.0">
+         <HBox prefHeight="241.0" prefWidth="1200.0" spacing="10.0">
             <children>
+               <PieChart fx:id="pieChart" labelLineLength="5.0" labelsVisible="false" legendSide="RIGHT" prefHeight="241.0" prefWidth="400.0">
+                  <padding>
+                     <Insets right="10.0" />
+                  </padding></PieChart>
                <ComboBox fx:id="categoryComboBox" prefHeight="45.0" prefWidth="150.0">
                   <HBox.margin>
                      <Insets top="70.0" />
@@ -55,8 +60,8 @@
                </ComboBox>
                <VBox spacing="10.0">
                   <children>
-                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="label1" text="Fon Adı" textAlignment="CENTER" />
-                     <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="45.0" />
+                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="110.0" styleClass="label1" text="Fon Adı" textAlignment="CENTER" />
+                     <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="45.0" prefWidth="110.0" />
                   </children>
                   <padding>
                      <Insets bottom="20.0" top="20.0" />
@@ -64,8 +69,8 @@
                </VBox>
                <VBox spacing="10.0">
                   <children>
-                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="label1" text="Adet" textAlignment="CENTER" />
-                     <TextField fx:id="countTextField" alignment="CENTER" prefHeight="45.0" text="0" />
+                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="110.0" styleClass="label1" text="Adet" textAlignment="CENTER" />
+                     <TextField fx:id="countTextField" alignment="CENTER" prefHeight="45.0" prefWidth="110.0" text="0" />
                   </children>
                   <padding>
                      <Insets bottom="20.0" top="20.0" />
@@ -73,8 +78,8 @@
                </VBox>
                <VBox spacing="10.0">
                   <children>
-                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="label1" text="Birim Maliyet" textAlignment="CENTER" />
-                     <TextField fx:id="priceTextField" alignment="CENTER" prefHeight="45.0" text="0" />
+                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="110.0" styleClass="label1" text="Birim Maliyet" textAlignment="CENTER" />
+                     <TextField fx:id="priceTextField" alignment="CENTER" prefHeight="45.0" prefWidth="110.0" text="0" />
                   </children>
                   <padding>
                      <Insets bottom="20.0" top="20.0" />
@@ -82,8 +87,8 @@
                </VBox>
                <VBox spacing="10.0">
                   <children>
-                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="label1" text="Talep Edildi" textAlignment="CENTER" />
-                     <TextField fx:id="demandTextField" alignment="CENTER" prefHeight="45.0" text="0" />
+                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="110.0" styleClass="label1" text="Talep Edildi" textAlignment="CENTER" />
+                     <TextField fx:id="demandTextField" alignment="CENTER" prefHeight="45.0" prefWidth="110.0" text="0" />
                   </children>
                   <padding>
                      <Insets bottom="20.0" top="20.0" />
@@ -100,7 +105,7 @@
                </VBox>
             </children>
             <padding>
-               <Insets left="20.0" right="20.0" />
+               <Insets right="10.0" />
             </padding>
          </HBox>
       </children>

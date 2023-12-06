@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -81,8 +82,12 @@ public class TotalPresenter implements Initializable, IButtonPage {
     @FXML
     public Button updateButton;
 
+    @FXML
+    private PieChart pieChart;
+
     private final ObservableList<CategoryElement> categoryElements = FXCollections.observableArrayList();
     private final ObservableList<TotalElement> totalElements = FXCollections.observableArrayList();
+    private final ObservableList<PieChart.Data> pieElements = FXCollections.observableArrayList();
 
     private Pane loadingPane;
 
@@ -101,7 +106,18 @@ public class TotalPresenter implements Initializable, IButtonPage {
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("KATILIM"), "KATILIM"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("PARA PİYASASI"), "PARA PİYASASI"));
 
-        categoryElements.forEach(CategoryElement::update);
+        categoryElements.forEach(categoryElement -> {
+            categoryElement.update();
+
+            PieChart.Data pieChartData = new PieChart.Data(categoryElement.categoryValueProperty().get(), 0);
+            pieChartData.pieValueProperty().bind(categoryElement.todayTotalPriceValueProperty());
+            pieChartData.getNode();
+
+            pieElements.add(pieChartData);
+        });
+
+        pieChart.setData(pieElements);
+        pieChart.setLegendVisible(true);
 
         totalElements.add(new TotalElement(categoryElements));
         totalElements.forEach(TotalElement::update);
@@ -133,8 +149,10 @@ public class TotalPresenter implements Initializable, IButtonPage {
             ()-> {
                 try {
                     Integer.parseInt(countTextField.getText());
-                    Double.parseDouble(priceTextField.getText());
-                    Double.parseDouble(demandTextField.getText());
+                    if (Double.parseDouble(priceTextField.getText()) < 0)
+                        return false;
+                    if (Double.parseDouble(demandTextField.getText()) < 0)
+                        return false;
                 } catch (Exception e) {
                     return true;
                 }
