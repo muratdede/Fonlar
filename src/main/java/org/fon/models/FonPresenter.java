@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 import org.fon.handlers.GraphData;
 import org.fon.handlers.TefasParser;
 import org.fon.models.elements.FonElement;
-import org.fon.presentation.stockChart.StockClassController;
-import org.fon.presentation.stockChart.StockClassView;
+import org.fon.presentation.stockChart.StockChartPresenter;
+import org.fon.presentation.stockChart.StockChartView;
 
 public class FonPresenter {
 
@@ -28,12 +28,12 @@ public class FonPresenter {
 
             FonElement fonElement = (FonElement) source;
 
-            StockClassView stockView = new StockClassView();
+            StockChartView stockView = new StockChartView();
             Scene stockScene = new Scene(stockView.getView());
 
             GraphData graphData = TefasParser.parseGraphData(fonElement.getName());
 
-            ((StockClassController) stockView.getPresenter()).initializeTable(graphData.getSeries());
+            ((StockChartPresenter) stockView.getPresenter()).initializeTable(graphData.getSeries());
 
             Stage stockStage = new Stage();
             stockStage.setScene(stockScene);

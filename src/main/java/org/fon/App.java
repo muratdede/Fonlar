@@ -10,7 +10,6 @@ import org.fon.presentation.home.HomeView;
 import java.util.Locale;
 
 public class App extends Application {
-
     private static HomePresenter homePresenter = null;
 
     public static void main(String[] args) {

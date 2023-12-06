@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class StockClassController implements Initializable {
+public class StockChartPresenter implements Initializable {
     @FXML
     public LineChart<String, Number> chart;
     @FXML
