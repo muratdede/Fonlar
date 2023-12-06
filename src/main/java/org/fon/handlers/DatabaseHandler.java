@@ -60,6 +60,11 @@ public class DatabaseHandler {
 
 
     public void addFon(FonElement fonElement) {
+        if (!TefasParser.isFonPresent(fonElement.getName())) {
+            LogHandler.println("Olmayan bir fon girdiniz!");
+            return;
+        }
+
         ObservableList<FonElement> fonElementList = getFonList(fonElement.getCategory());
 
         for (FonElement tmpFonElement : fonElementList) {

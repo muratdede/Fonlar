@@ -60,4 +60,28 @@ public class TefasParser {
 
         return new GraphData(new XYChart.Series<>(results), fonName, longFonName);
     }
+
+    public static boolean isFonPresent(String fonName) {
+        try {
+            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonName);
+
+            Matcher longNameMatcher = longNamePattern.matcher(content);
+            if (longNameMatcher.find()) {
+                String value = longNameMatcher.group();
+
+                String longFonName = value.substring(value.lastIndexOf("<span id=\"MainContent_FormViewMainIndicators_LabelFund\">") +
+                        "<span id=\"MainContent_FormViewMainIndicators_LabelFund\">".length(), value.lastIndexOf("</span></h2>"));
+
+                if (longFonName.equalsIgnoreCase("fon")) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (IOException ignored) {
+            return false;
+        }
+
+        return true;
+    }
 }

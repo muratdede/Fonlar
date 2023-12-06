@@ -93,7 +93,8 @@ public class TotalPresenter implements Initializable, IButtonPage {
 
     @Override
     public void keyPressed(KeyCode keyCode) {
-        updateButton.fire();
+        if (keyCode == KeyCode.getKeyCode("F5"))
+            updateButton.fire();
     }
 
     @Override
