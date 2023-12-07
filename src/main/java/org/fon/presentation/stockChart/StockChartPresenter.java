@@ -55,8 +55,8 @@ public class StockChartPresenter implements Initializable {
                 Bounds nodeBounds = d.getNode().getBoundsInLocal();
                 Bounds nodeBoundsInScreen = d.getNode().localToScreen(nodeBounds);
                 tooltip.show(d.getNode(),
-                        nodeBoundsInScreen.getMaxX()+15,
-                        nodeBoundsInScreen.getMaxY()+5);
+                        nodeBoundsInScreen.getMaxX() + 15,
+                        nodeBoundsInScreen.getMaxY() + 5);
             });
             d.getNode().setOnMouseExited(event -> tooltip.hide());
         }

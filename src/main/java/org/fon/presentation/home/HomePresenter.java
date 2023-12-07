@@ -80,8 +80,8 @@ public class HomePresenter implements Initializable, IButtonPage {
             
             if (keyCode == KeyCode.getKeyCode("F5"))
                 totalButtonPage.keyPressed(keyCode);
-            
-            currentButtonPage.keyPressed(keyCode);
+            else
+                currentButtonPage.keyPressed(keyCode);
         });
     }
 

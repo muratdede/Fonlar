@@ -2,6 +2,7 @@ package org.fon.models.elements;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -96,5 +97,9 @@ public class TotalElement {
 
     public ObjectProperty<MoneyLabel> demandProperty() {
         return demand;
+    }
+
+    public DoubleProperty todayTotalPriceValueProperty() {
+        return todayTotalPrice.get().valueProperty();
     }
 }

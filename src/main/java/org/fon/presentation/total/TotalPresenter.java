@@ -107,21 +107,35 @@ public class TotalPresenter implements Initializable, IButtonPage {
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("KATILIM"), "KATILIM"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("PARA PİYASASI"), "PARA PİYASASI"));
 
+        totalElements.add(new TotalElement(categoryElements));
+        totalElements.forEach(TotalElement::update);
+
         categoryElements.forEach(categoryElement -> {
             categoryElement.update();
 
             PieChart.Data pieChartData = new PieChart.Data(categoryElement.categoryValueProperty().get(), 0);
-            pieChartData.pieValueProperty().bind(categoryElement.todayTotalPriceValueProperty());
+            pieChartData.pieValueProperty().bind(Bindings.multiply(100, Bindings.divide(categoryElement.todayTotalPriceValueProperty(), totalElements.get(0).todayTotalPriceValueProperty())));
             pieChartData.getNode();
 
             pieElements.add(pieChartData);
         });
 
         pieChart.setData(pieElements);
-        pieChart.setLegendVisible(true);
 
-        totalElements.add(new TotalElement(categoryElements));
-        totalElements.forEach(TotalElement::update);
+        Tooltip tooltip = new Tooltip();
+        pieChart.getData().forEach(pieData -> {
+            pieData.getNode().setOnMouseEntered(mouseEvent -> {
+                tooltip.setText(String.format("%s\n%%%.2f", pieData.getName(), pieData.getPieValue()));
+                tooltip.setStyle("-fx-font-size: 13px; -fx-text-fill: white;");
+
+                tooltip.show(pieData.getNode(), mouseEvent.getScreenX() + 15, mouseEvent.getScreenY() + 15);
+            });
+            pieData.getNode().setOnMouseMoved(mouseEvent -> {
+                tooltip.setAnchorX(mouseEvent.getScreenX() + 15);
+                tooltip.setAnchorY(mouseEvent.getScreenY() + 15);
+            });
+            pieData.getNode().setOnMouseExited(mouseEvent -> tooltip.hide());
+        });
 
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
