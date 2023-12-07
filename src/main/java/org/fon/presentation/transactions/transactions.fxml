@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.islemGecmisi.IslemGecmisiPresenter">
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.transactions.TransactionsPresenter">
    <TableView fx:id="table" prefHeight="600.0" prefWidth="1200.0" styleClass="table-view1">
       <placeholder>
          <Label text="Henüz işlem girilmemiş."/>
@@ -13,10 +13,9 @@
       <columns>
          <TableColumn fx:id="name" prefWidth="150.0" text="Fon Adı"/>
          <TableColumn fx:id="count" prefWidth="150.0" text="Adet"/>
-         <TableColumn fx:id="price" minWidth="0.0" prefWidth="200.0" text="Alış Satış Birim Fiyatı"/>
-         <TableColumn fx:id="totalPrice" minWidth="0.0" prefWidth="200.0" text="Alış Satış Toplam Fiyatı"/>
-         <TableColumn fx:id="demand" prefWidth="200.0" text="Talep Miktarı"/>
-         <TableColumn fx:id="time" prefWidth="299.0" text="İşlem Tarihi"/>
+         <TableColumn fx:id="price" prefWidth="200.0" text="Alış Satış Birim Fiyatı"/>
+         <TableColumn fx:id="totalPrice" prefWidth="200.0" text="Alış Satış Toplam Fiyatı"/>
+         <TableColumn fx:id="time" prefWidth="499.0" text="İşlem Tarihi"/>
       </columns>
    </TableView>
 </AnchorPane>

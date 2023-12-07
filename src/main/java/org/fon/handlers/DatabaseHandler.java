@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.fon.models.elements.FonElement;
+import org.fon.models.elements.TransactionElement;
 
 import java.io.IOException;
 import java.sql.*;
@@ -21,7 +22,7 @@ public class DatabaseHandler {
     Statement statement = null;
 
     Map<String, ObservableList<FonElement>> fonElementListMap = null;
-    ObservableList<FonElement> transactionsList = null;
+    ObservableList<TransactionElement> transactionsList = null;
 
     String[] fonCategories = {"HİSSE FONLARI",
             "KIYMETLİ MADENLER",
@@ -44,7 +45,7 @@ public class DatabaseHandler {
             for (String fonCategory : fonCategories) {
                 statement.execute("CREATE TABLE IF NOT EXISTS \"" + fonCategory + "\"(\"AD\", \"Adet\", \"Birim Maliyet\", \"Birim Fiyatı\", \"% Değişim\", \"Talep Edildi\", \"Güncellenme Tarihi\");");
             }
-            statement.execute("CREATE TABLE IF NOT EXISTS \"İŞLEM GEÇMİŞİ\"(\"AD\", \"Adet\", \"Alış/Satış Fiyatı\", \"Toplam\", \"Talep Edildi\", \"İşlem Tarihi\");");
+            statement.execute("CREATE TABLE IF NOT EXISTS \"İŞLEM GEÇMİŞİ\"(\"AD\", \"Adet\", \"Alış/Satış Fiyatı\", \"İşlem Tarihi\");");
 
         } catch (SQLException e) {
             LogHandler.printStackTrace(e);
@@ -201,21 +202,40 @@ public class DatabaseHandler {
 
             ResultSet rs = statement.executeQuery( "SELECT * FROM \"İŞLEM GEÇMİŞİ\";");
             while (rs.next()) {
-                transactionsList.add(new FonElement("",
+                transactionsList.add(new TransactionElement(
                         rs.getString(1),
                         rs.getInt(2),
                         Double.parseDouble(rs.getString(3) != null ? rs.getString(3) : "0"),
-                        Double.parseDouble(rs.getString(4) != null ? rs.getString(4) : "0"),
-                        Double.parseDouble(rs.getString(5) != null ? rs.getString(5) : "0"),
-                        0.0,
-                        rs.getString(7)));
+                        rs.getString(4)));
             }
         } catch (SQLException e) {
             LogHandler.printStackTrace(e);
         }
     }
 
-    public ObservableList<FonElement> getTransactions() {
+    public ObservableList<TransactionElement> getTransactions() {
         return transactionsList;
+    }
+
+    public void insertTransaction(FonElement fonElement) {
+        if (!TefasParser.isFonPresent(fonElement.getName())) {
+            LogHandler.println("Olmayan bir fon girdiniz!");
+            return;
+        }
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
+        String dateTime = dtf.format(LocalDateTime.now());
+
+        TransactionElement transactionElement = new TransactionElement(fonElement.getName(),
+                fonElement.getCount(),
+                fonElement.getPrice(),
+                dateTime);
+
+        transactionsList.add(transactionElement);
+        try {
+            statement.executeUpdate(transactionElement.toSqlInsertString());
+        } catch (SQLException e) {
+            LogHandler.printStackTrace(e);
+        }
     }
 }

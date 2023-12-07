@@ -10,22 +10,29 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import org.fon.handlers.DatabaseHandler;
 import org.fon.models.IButtonPage;
+import org.fon.models.connector.BConnector;
 import org.fon.presentation.degisken.DegiskenView;
 import org.fon.presentation.fonSepeti.FonSepetiView;
 import org.fon.presentation.hisseFonlari.HisseFonlariView;
-import org.fon.presentation.islemGecmisi.IslemGecmisiView;
+import org.fon.presentation.total.TotalPresenter;
+import org.fon.presentation.transactions.TransactionsView;
 import org.fon.presentation.karma.KarmaView;
 import org.fon.presentation.katilim.KatilimView;
 import org.fon.presentation.kiymetliMadenler.KiymetliMadenlerView;
 import org.fon.presentation.paraPiyasasi.ParaPiyasasiView;
 import org.fon.presentation.total.TotalView;
 
+import javax.inject.Inject;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class HomePresenter implements Initializable, IButtonPage {
+    @Inject
+    DatabaseHandler databaseHandler;
+
     @FXML
     public BorderPane root;
     @FXML
@@ -66,11 +73,11 @@ public class HomePresenter implements Initializable, IButtonPage {
         buttonFXMLViewHashMap.put(fonSepeti, new FonSepetiView());
         buttonFXMLViewHashMap.put(katilim, new KatilimView());
         buttonFXMLViewHashMap.put(paraPiyasasi, new ParaPiyasasiView());
-        buttonFXMLViewHashMap.put(islemGecmisi, new IslemGecmisiView());
+        buttonFXMLViewHashMap.put(islemGecmisi, new TransactionsView());
 
         switchPage(total);
 
-        totalButtonPage = (IButtonPage) (buttonFXMLViewHashMap.get(total)).getPresenter();
+        initConnections();
 
         root.setOnKeyPressed(keyEvent -> {
             if (currentButtonPage == null)
@@ -83,6 +90,15 @@ public class HomePresenter implements Initializable, IButtonPage {
             else
                 currentButtonPage.keyPressed(keyCode);
         });
+    }
+
+    private void initConnections() {
+        TotalPresenter totalPresenter = (TotalPresenter) (buttonFXMLViewHashMap.get(total)).getPresenter();
+        totalButtonPage = totalPresenter;
+
+        BConnector.connect(totalPresenter.newEntryRequested, databaseHandler::addFon);
+        BConnector.connect(totalPresenter.newEntryRequested, databaseHandler::insertTransaction);
+        BConnector.connect(totalPresenter.priceUpdateRequested, databaseHandler::updatePrices);
     }
 
     public void buttonPressed(ActionEvent event) {

@@ -26,6 +26,12 @@ public class MoneyLabel extends Label {
     private final Timeline popupTimeline;
     protected final DecimalFormat longFormatter = (DecimalFormat) NumberFormat.getInstance(new Locale("tr", "TR"));
 
+    public MoneyLabel(Double initialValue) {
+        this();
+
+        valueProperty.set(initialValue);
+    }
+
     public MoneyLabel() {
         DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
         symbols.setGroupingSeparator('.');

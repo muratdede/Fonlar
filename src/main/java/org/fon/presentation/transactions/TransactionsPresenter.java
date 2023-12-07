@@ -1,5 +1,4 @@
-package org.fon.presentation.islemGecmisi;
-
+package org.fon.presentation.transactions;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,31 +6,29 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.fon.handlers.DatabaseHandler;
-import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
+import org.fon.models.elements.TransactionElement;
 
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class IslemGecmisiPresenter implements Initializable, IButtonPage {
+public class TransactionsPresenter implements Initializable, IButtonPage {
     @Inject
     DatabaseHandler databaseHandler;
 
     @FXML
-    private TableColumn<FonElement, String> name;
+    private TableColumn<TransactionElement, String> name;
     @FXML
-    private TableColumn<FonElement, String> count;
+    private TableColumn<TransactionElement, String> count;
     @FXML
-    private TableColumn<FonElement, String> price;
+    private TableColumn<TransactionElement, String> price;
     @FXML
-    private TableColumn<FonElement, String> totalPrice;
+    private TableColumn<TransactionElement, String> totalPrice;
     @FXML
-    private TableColumn<FonElement, String> demand;
+    private TableColumn<TransactionElement, String> time;
     @FXML
-    private TableColumn<FonElement, String> time;
-    @FXML
-    private TableView<FonElement> table;
+    private TableView<TransactionElement> table;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,7 +36,7 @@ public class IslemGecmisiPresenter implements Initializable, IButtonPage {
         count.setCellValueFactory(new PropertyValueFactory<>("count"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        demand.setCellValueFactory(new PropertyValueFactory<>("demand"));
+        time.setCellValueFactory(new PropertyValueFactory<>("transactionTime"));
 
         table.setItems(databaseHandler.getTransactions());
     }

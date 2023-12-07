@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.fon.handlers.DatabaseHandler;
+import org.fon.models.connector.BSignal;
 import org.fon.models.elements.CategoryElement;
 import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
@@ -28,6 +29,10 @@ import org.fon.App;
 public class TotalPresenter implements Initializable, IButtonPage {
     @Inject
     DatabaseHandler databaseHandler;
+
+    /* signals */
+    public BSignal newEntryRequested = new BSignal(this);
+    public BSignal priceUpdateRequested = new BSignal(this);
 
     @FXML
     private TableColumn<CategoryElement, String> category;
@@ -186,7 +191,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
         updateButton.setDisable(true);
         App.showPopup(loadingPane);
         new Thread(()-> {
-            databaseHandler.updatePrices();
+            priceUpdateRequested.emit();
             Platform.runLater(() -> {
                 updateButton.setDisable(false);
                 App.showPopup(null);
@@ -204,7 +209,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
                 Double.parseDouble(demandTextField.getText()),
                 "");
 
-        databaseHandler.addFon(fonElement);
+        newEntryRequested.emit(fonElement);
     }
 
     private void createPopUp() {
