@@ -2,11 +2,9 @@ package org.fon.presentation.home;
 
 
 import com.airhacks.afterburner.views.FXMLView;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -25,7 +23,6 @@ import org.fon.presentation.total.TotalView;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class HomePresenter implements Initializable, IButtonPage {
@@ -83,8 +80,8 @@ public class HomePresenter implements Initializable, IButtonPage {
             
             if (keyCode == KeyCode.getKeyCode("F5"))
                 totalButtonPage.keyPressed(keyCode);
-            
-            currentButtonPage.keyPressed(keyCode);
+            else
+                currentButtonPage.keyPressed(keyCode);
         });
     }
 

@@ -3,10 +3,10 @@ package org.fon.handlers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.fon.models.FonElement;
+import org.fon.models.elements.FonElement;
 
+import java.io.IOException;
 import java.sql.*;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -60,47 +60,57 @@ public class DatabaseHandler {
 
 
     public void addFon(FonElement fonElement) {
+        if (!TefasParser.isFonPresent(fonElement.getName())) {
+            LogHandler.println("Olmayan bir fon girdiniz!");
+            return;
+        }
+
         ObservableList<FonElement> fonElementList = getFonList(fonElement.getCategory());
 
         for (FonElement tmpFonElement : fonElementList) {
             if (tmpFonElement.getName().equals(fonElement.getName())) {
                 Double newTotalPrice = tmpFonElement.getPrice() * tmpFonElement.getCount() + fonElement.getPrice() * fonElement.getCount();
 
-                tmpFonElement.setCount(tmpFonElement.getCount() + fonElement.getCount());
+                tmpFonElement.setCount(Math.max(tmpFonElement.getCount() + fonElement.getCount(), 0));
 
-                if (tmpFonElement.getCount() <= 0) {
+                if ((tmpFonElement.getCount() <= 0) && (tmpFonElement.getDemand() <= 0.001)) {
                     fonElementList.remove(tmpFonElement);
                     deleteFon(tmpFonElement);
                     return;
                 }
 
-                tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
-                tmpFonElement.setDemand(tmpFonElement.getDemand() + fonElement.getDemand());
+                if (tmpFonElement.getCount() <= 0)
+                    tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
+
+                tmpFonElement.setDemand(Math.max(tmpFonElement.getDemand() + fonElement.getDemand(), 0));
 
                 updateFon(tmpFonElement);
                 return;
             }
         }
 
-        if (fonElement.getCount() > 0) {
+        fonElement.setCount(Math.max(fonElement.getCount(), 0));
+        if ((fonElement.getCount() > 0) || (fonElement.getDemand() >= 0.001)) {
             fonElementList.add(fonElement);
             insertFon(fonElement);
         }
     }
 
     public void updatePrices() {
-        char decimalSeparator = ((DecimalFormat) DecimalFormat.getInstance()).getDecimalFormatSymbols().getDecimalSeparator();
-
         for (List<FonElement> fonElementList : fonElementListMap.values()) {
             for (FonElement fonElement : fonElementList) {
-                String pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
-                if (pageContents == null)
+                String pageContents = null;
+                try {
+                    pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
+                } catch (IOException e) {
+                    LogHandler.printStackTrace(e);
                     continue;
+                }
 
                 Double price = fonElement.getTodayPrice();
                 Double percentage = fonElement.getChangePercentage();
 
-                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />\\r\\n.*?\\r\\n.*?<span>.*?</span>");
+                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />.*?<span>.*?</span>");
                 Matcher priceMatcher = pricePattern.matcher(pageContents);
                 if (priceMatcher.find()) {
                     String token = priceMatcher.group();
@@ -112,7 +122,7 @@ public class DatabaseHandler {
                         continue;
                 }
 
-                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />\\r\\n.*?\\r\\n.*?<span>%.*?</span>");
+                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />.*?<span>%.*?</span>");
                 Matcher percentageMatcher = percentagePattern.matcher(pageContents);
                 if (percentageMatcher.find()) {
                     String token = percentageMatcher.group();

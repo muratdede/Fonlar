@@ -1,27 +1,21 @@
 package org.fon.presentation.hisseFonlari;
 
 
-import com.airhacks.afterburner.views.FXMLView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import org.fon.handlers.DatabaseHandler;
-import org.fon.models.FonElement;
+import org.fon.models.FonPresenter;
 import org.fon.models.IButtonPage;
-import org.fon.presentation.total.TotalView;
+import org.fon.models.elements.FonElement;
 
 import javax.inject.Inject;
-import javax.xml.crypto.Data;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class HisseFonlariPresenter implements Initializable, IButtonPage {
+public class HisseFonlariPresenter extends FonPresenter implements Initializable, IButtonPage {
     @Inject
     DatabaseHandler databaseHandler;
 

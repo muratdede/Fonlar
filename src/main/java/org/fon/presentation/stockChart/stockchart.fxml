@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+
+<LineChart fx:id="chart" legendVisible="false" prefHeight="350.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.stockChart.StockChartPresenter">
+  <xAxis>
+    <CategoryAxis side="BOTTOM" tickLabelsVisible="false" visible="false" fx:id="xAxis" />
+  </xAxis>
+  <yAxis>
+    <NumberAxis fx:id="yAxis" autoRanging="false" label="Fiyat" minorTickVisible="false" side="LEFT" />
+  </yAxis>
+</LineChart>

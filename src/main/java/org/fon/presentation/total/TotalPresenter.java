@@ -8,17 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.fon.handlers.DatabaseHandler;
-import org.fon.models.CategoryElement;
-import org.fon.models.FonElement;
+import org.fon.models.elements.CategoryElement;
+import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
-import org.fon.models.TotalElement;
+import org.fon.models.elements.TotalElement;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -82,14 +82,19 @@ public class TotalPresenter implements Initializable, IButtonPage {
     @FXML
     public Button updateButton;
 
-    private ObservableList<CategoryElement> categoryElements = FXCollections.observableArrayList();
-    private ObservableList<TotalElement> totalElements = FXCollections.observableArrayList();
+    @FXML
+    private PieChart pieChart;
+
+    private final ObservableList<CategoryElement> categoryElements = FXCollections.observableArrayList();
+    private final ObservableList<TotalElement> totalElements = FXCollections.observableArrayList();
+    private final ObservableList<PieChart.Data> pieElements = FXCollections.observableArrayList();
 
     private Pane loadingPane;
 
     @Override
     public void keyPressed(KeyCode keyCode) {
-        updateButton.fire();
+        if (keyCode == KeyCode.getKeyCode("F5"))
+            updateButton.fire();
     }
 
     @Override
@@ -102,10 +107,35 @@ public class TotalPresenter implements Initializable, IButtonPage {
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("KATILIM"), "KATILIM"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("PARA PİYASASI"), "PARA PİYASASI"));
 
-        categoryElements.forEach(CategoryElement::update);
-
         totalElements.add(new TotalElement(categoryElements));
         totalElements.forEach(TotalElement::update);
+
+        categoryElements.forEach(categoryElement -> {
+            categoryElement.update();
+
+            PieChart.Data pieChartData = new PieChart.Data(categoryElement.categoryValueProperty().get(), 0);
+            pieChartData.pieValueProperty().bind(Bindings.multiply(100, Bindings.divide(categoryElement.todayTotalPriceValueProperty(), totalElements.get(0).todayTotalPriceValueProperty())));
+            pieChartData.getNode();
+
+            pieElements.add(pieChartData);
+        });
+
+        pieChart.setData(pieElements);
+
+        Tooltip tooltip = new Tooltip();
+        pieChart.getData().forEach(pieData -> {
+            pieData.getNode().setOnMouseEntered(mouseEvent -> {
+                tooltip.setText(String.format("%s\n%%%.2f", pieData.getName(), pieData.getPieValue()));
+                tooltip.setStyle("-fx-font-size: 13px; -fx-text-fill: white;");
+
+                tooltip.show(pieData.getNode(), mouseEvent.getScreenX() + 15, mouseEvent.getScreenY() + 15);
+            });
+            pieData.getNode().setOnMouseMoved(mouseEvent -> {
+                tooltip.setAnchorX(mouseEvent.getScreenX() + 15);
+                tooltip.setAnchorY(mouseEvent.getScreenY() + 15);
+            });
+            pieData.getNode().setOnMouseExited(mouseEvent -> tooltip.hide());
+        });
 
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
@@ -134,8 +164,10 @@ public class TotalPresenter implements Initializable, IButtonPage {
             ()-> {
                 try {
                     Integer.parseInt(countTextField.getText());
-                    Double.parseDouble(priceTextField.getText());
-                    Double.parseDouble(demandTextField.getText());
+                    if (Double.parseDouble(priceTextField.getText()) < 0)
+                        return false;
+                    if (Double.parseDouble(demandTextField.getText()) < 0)
+                        return false;
                 } catch (Exception e) {
                     return true;
                 }
@@ -150,7 +182,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
         createPopUp();
     }
 
-    public void updatePrices(ActionEvent event) {
+    public void updatePrices(ActionEvent ignored) {
         updateButton.setDisable(true);
         App.showPopup(loadingPane);
         new Thread(()-> {
@@ -162,7 +194,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
         }).start();
     }
 
-    public void newEntry(ActionEvent actionEvent) {
+    public void newEntry(ActionEvent ignored) {
         FonElement fonElement = new FonElement(categoryComboBox.getSelectionModel().getSelectedItem(),
                 nameTextField.getText().toUpperCase(),
                 Integer.parseInt(countTextField.getText()),

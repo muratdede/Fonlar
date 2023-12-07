@@ -1,0 +1,20 @@
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-line-symbol {
+    -fx-background-color: transparent;
+}
+
+.chart-line-symbol:hover {
+    -fx-background-color: #C04D23;
+}
+
+.axis-tick-mark {
+    -fx-stroke: transparent;
+}
+
+.text {
+    -fx-font-size: 16pt;
+    -fx-font-family: "Bahnschrift Condensed";
+}

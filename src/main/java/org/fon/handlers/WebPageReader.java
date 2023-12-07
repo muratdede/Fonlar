@@ -1,35 +1,25 @@
 package org.fon.handlers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.ConnectException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class WebPageReader {
-    public static String readWebPage(String url) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET() // GET is default
-                .build();
+    public static String readWebPage(String urlStr) throws IOException {
+        URL url = new URL(urlStr);
+        URLConnection connection = url.openConnection();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()));
 
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            LogHandler.printStackTrace(e);
-            return null;
-        } catch (IOException e) {
-            LogHandler.println("Connection Failed!");
-            return null;
-        }
+        StringBuilder returnValue = new StringBuilder();
+        String inputLine = "";
+        while ((inputLine = in.readLine()) != null)
+            returnValue.append(inputLine);
 
-        return response.body();
+        in.close();
+        return returnValue.toString();
     }
 }

@@ -202,3 +202,11 @@
 .selected-button1:pressed {
     -fx-background-color: #AAAAAA;
 }
+
+.default-color0.chart-pie { -fx-pie-color: #4572a7; }
+.default-color1.chart-pie { -fx-pie-color: #89a54e; }
+.default-color2.chart-pie { -fx-pie-color: #3d96ae; }
+.default-color3.chart-pie { -fx-pie-color: #92a8cd; }
+.default-color4.chart-pie { -fx-pie-color: #b5ca92; }
+.default-color5.chart-pie { -fx-pie-color: #db843d; }
+.default-color6.chart-pie { -fx-pie-color: #a47d7c; }
