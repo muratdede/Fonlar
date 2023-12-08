@@ -12,10 +12,11 @@
       </placeholder>
       <columns>
          <TableColumn fx:id="name" prefWidth="150.0" text="Fon Adı"/>
+         <TableColumn fx:id="type" prefWidth="100.0" text="İşlem"/>
          <TableColumn fx:id="count" prefWidth="150.0" text="Adet"/>
          <TableColumn fx:id="price" prefWidth="200.0" text="Alış Satış Birim Fiyatı"/>
          <TableColumn fx:id="totalPrice" prefWidth="200.0" text="Alış Satış Toplam Fiyatı"/>
-         <TableColumn fx:id="time" prefWidth="499.0" text="İşlem Tarihi"/>
+         <TableColumn fx:id="time" prefWidth="399.0" text="İşlem Tarihi"/>
       </columns>
    </TableView>
 </AnchorPane>

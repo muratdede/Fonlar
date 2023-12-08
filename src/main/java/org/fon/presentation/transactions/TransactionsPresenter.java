@@ -20,6 +20,8 @@ public class TransactionsPresenter implements Initializable, IButtonPage {
     @FXML
     private TableColumn<TransactionElement, String> name;
     @FXML
+    private TableColumn<TransactionElement, String> type;
+    @FXML
     private TableColumn<TransactionElement, String> count;
     @FXML
     private TableColumn<TransactionElement, String> price;
@@ -33,6 +35,7 @@ public class TransactionsPresenter implements Initializable, IButtonPage {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
         count.setCellValueFactory(new PropertyValueFactory<>("count"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));

@@ -3,7 +3,7 @@ package org.fon.models.money;
 import javafx.beans.binding.Bindings;
 import javafx.scene.paint.Color;
 
-public class MoneyProfitLabel extends MoneyLabel{
+public class MoneyProfitLabel extends MoneyLabel {
 
     public MoneyProfitLabel() {
         createColorBinding();
