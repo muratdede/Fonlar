@@ -202,7 +202,7 @@ public class DatabaseHandler {
 
             ResultSet rs = statement.executeQuery( "SELECT * FROM \"İŞLEM GEÇMİŞİ\";");
             while (rs.next()) {
-                transactionsList.add(new TransactionElement(
+                transactionsList.add(0, new TransactionElement(
                         rs.getString(1),
                         rs.getInt(2),
                         Double.parseDouble(rs.getString(3) != null ? rs.getString(3) : "0"),
@@ -231,7 +231,7 @@ public class DatabaseHandler {
                 fonElement.getPrice(),
                 dateTime);
 
-        transactionsList.add(transactionElement);
+        transactionsList.add(0, transactionElement);
         try {
             statement.executeUpdate(transactionElement.toSqlInsertString());
         } catch (SQLException e) {
