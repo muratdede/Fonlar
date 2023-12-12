@@ -53,7 +53,6 @@ public class BSignal {
         if (stackTrace.length < 5)
             return null;
 
-        System.out.println(stackTrace[4].getClass().getName());
         return stackTrace[4].getClassName();
     }
 }
