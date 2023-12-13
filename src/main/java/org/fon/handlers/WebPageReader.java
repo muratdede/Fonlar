@@ -15,9 +15,13 @@ public class WebPageReader {
                         connection.getInputStream()));
 
         StringBuilder returnValue = new StringBuilder();
-        String inputLine = "";
-        while ((inputLine = in.readLine()) != null)
-            returnValue.append(inputLine);
+
+        int BUFFER_SIZE=1024;
+        char[] buffer = new char[BUFFER_SIZE]; // or some other size,
+        int charsRead = 0;
+        while ( (charsRead  = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
+            returnValue.append(buffer, 0, charsRead);
+        }
 
         in.close();
         return returnValue.toString();

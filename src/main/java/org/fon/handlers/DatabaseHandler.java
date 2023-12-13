@@ -61,11 +61,6 @@ public class DatabaseHandler {
 
 
     public void addFon(FonElement fonElement) {
-        if (!TefasParser.isFonPresent(fonElement.getName())) {
-            LogHandler.println("Olmayan bir fon girdiniz!");
-            return;
-        }
-
         ObservableList<FonElement> fonElementList = getFonList(fonElement.getCategory());
 
         for (FonElement tmpFonElement : fonElementList) {
@@ -218,11 +213,6 @@ public class DatabaseHandler {
     }
 
     public void insertTransaction(FonElement fonElement) {
-        if (!TefasParser.isFonPresent(fonElement.getName())) {
-            LogHandler.println("Olmayan bir fon girdiniz!");
-            return;
-        }
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
         String dateTime = dtf.format(LocalDateTime.now());
 

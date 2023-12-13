@@ -62,8 +62,9 @@ public class AutoCompleteComboBox extends ComboBox<String> {
             if (newItems.size() == 1)
                 getSelectionModel().selectFirst();
 
-            hide();
-            if (!isHide)
+            if (isHide)
+                hide();
+            else
                 show();
         });
 

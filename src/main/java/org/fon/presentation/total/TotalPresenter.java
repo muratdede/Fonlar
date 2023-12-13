@@ -106,7 +106,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        nameTextField.setAutoCompleteItems(TefasParser.getFundList());
+        nameTextField.setAutoCompleteItems(TefasParser.getFonList());
 
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("HİSSE FONLARI"), "HİSSE FONLARI"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("KIYMETLİ MADENLER"), "KIYMETLİ MADENLER"));
