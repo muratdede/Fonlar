@@ -180,9 +180,9 @@ public class TotalPresenter implements Initializable, IButtonPage {
                 } catch (Exception e) {
                     return true;
                 }
-                return nameTextField.getEditor().getText().isEmpty();
+                return nameTextField.getSelectionModel().getSelectedItem() == null;
             },
-            nameTextField.getEditor().textProperty(),
+            nameTextField.getSelectionModel().selectedItemProperty(),
             countTextField.textProperty(),
             priceTextField.textProperty(),
             demandTextField.textProperty()

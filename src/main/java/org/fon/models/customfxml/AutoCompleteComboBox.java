@@ -18,42 +18,34 @@ public class AutoCompleteComboBox extends ComboBox<String> {
 
     private void initAutoComplete() {
         addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-            String str = getSelectionModel().getSelectedItem();
+            String str = getEditor().getText();
+            boolean isHide = false;
 
             switch (event.getCode()) {
-                case ESCAPE:
-                    hide();
                 case UP:
                 case DOWN:
                     return;
-                case ENTER:
+                case DELETE:
+                case BACK_SPACE:
                     if (str == null)
-                        return;
+                        break;
 
                     getSelectionModel().clearSelection();
                     getEditor().setText(str);
                     getEditor().positionCaret(str.length());
                     break;
-                case DELETE:
-                case BACK_SPACE:
-                    if (str == null) {
-                        break;
-                    }
-
-                    getSelectionModel().clearSelection();
-                    getEditor().setText(str);
-                    break;
+                case ENTER:
+                    getEditor().positionCaret(str.length());
+                case ESCAPE:
+                    isHide = true;
                 case LEFT:
                 case RIGHT:
                     break;
             }
 
             lastCaretPos = getEditor().getCaretPosition();
-
             if (lastCaretPos == 0) {
-                if (isShowing())
-                    hide();
-                setItems(autoCompleteItems);
+                hide();
                 return;
             }
 
@@ -64,17 +56,29 @@ public class AutoCompleteComboBox extends ComboBox<String> {
                 }
             });
 
-            if (newItems.isEmpty()) {
-                getEditor().setStyle("-fx-text-fill: red;");
-            } else {
-                getEditor().setStyle("-fx-text-fill: black;");
-            }
-
             setItems(newItems);
             getEditor().positionCaret(lastCaretPos);
 
+            if (newItems.size() == 1)
+                getSelectionModel().selectFirst();
+
             hide();
-            show();
+            if (!isHide)
+                show();
+        });
+
+        getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue.equalsIgnoreCase(newValue))
+                return;
+
+            for (String item : autoCompleteItems) {
+                if (item.contains(newValue.toUpperCase())) {
+                    getEditor().setText(newValue.toUpperCase());
+                    return;
+                }
+            }
+
+            getEditor().setText(oldValue);
         });
     }
 
