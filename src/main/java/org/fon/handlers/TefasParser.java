@@ -84,4 +84,29 @@ public class TefasParser {
 
         return true;
     }
+
+    public static ObservableList<String> getFundList() {
+        ObservableList<String> result = FXCollections.observableArrayList();
+
+        Pattern pattern = Pattern.compile("<ul class=\"fund-list\">.*?</ul>");
+
+        try {
+            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?");
+
+            Matcher longNameMatcher = pattern.matcher(content);
+
+            if (longNameMatcher.find()) {
+                String value = longNameMatcher.group();
+
+                String[] strings = value.split("<a href='FonAnaliz.aspx\\?FonKod=");
+                for (int i = 1; i < strings.length; i++) {
+                    result.add(strings[i].substring(0,3));
+                }
+            }
+        } catch (IOException e) {
+            LogHandler.printStackTrace(e);
+        }
+
+        return result;
+    }
 }
