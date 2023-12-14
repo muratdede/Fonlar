@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyEvent;
+import java.util.Objects;
 
 public class AutoCompleteComboBox extends ComboBox<String> {
 
@@ -32,7 +33,7 @@ public class AutoCompleteComboBox extends ComboBox<String> {
 
                     getSelectionModel().clearSelection();
                     getEditor().setText(str);
-                    getEditor().positionCaret(str.length());
+                    getEditor().positionCaret(lastCaretPos);
                     break;
                 case ENTER:
                     getEditor().positionCaret(str.length());
@@ -72,6 +73,11 @@ public class AutoCompleteComboBox extends ComboBox<String> {
             if (oldValue.equalsIgnoreCase(newValue))
                 return;
 
+            if (Objects.equals(newValue, "")) {
+                getSelectionModel().clearSelection();
+                return;
+            }
+
             for (String item : autoCompleteItems) {
                 if (item.contains(newValue.toUpperCase())) {
                     getEditor().setText(newValue.toUpperCase());
@@ -79,6 +85,7 @@ public class AutoCompleteComboBox extends ComboBox<String> {
                 }
             }
 
+            getSelectionModel().clearSelection();
             getEditor().setText(oldValue);
         });
     }
