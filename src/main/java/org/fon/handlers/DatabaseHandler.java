@@ -61,11 +61,6 @@ public class DatabaseHandler {
 
 
     public void addFon(FonElement fonElement) {
-        if (!TefasParser.isFonPresent(fonElement.getName())) {
-            LogHandler.println("Olmayan bir fon girdiniz!");
-            return;
-        }
-
         ObservableList<FonElement> fonElementList = getFonList(fonElement.getCategory());
 
         for (FonElement tmpFonElement : fonElementList) {
@@ -80,7 +75,7 @@ public class DatabaseHandler {
                     return;
                 }
 
-                if (tmpFonElement.getCount() <= 0)
+                if (fonElement.getCount() > 0)
                     tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
 
                 tmpFonElement.setDemand(Math.max(tmpFonElement.getDemand() + fonElement.getDemand(), 0));
@@ -202,7 +197,7 @@ public class DatabaseHandler {
 
             ResultSet rs = statement.executeQuery( "SELECT * FROM \"İŞLEM GEÇMİŞİ\";");
             while (rs.next()) {
-                transactionsList.add(new TransactionElement(
+                transactionsList.add(0, new TransactionElement(
                         rs.getString(1),
                         rs.getInt(2),
                         Double.parseDouble(rs.getString(3) != null ? rs.getString(3) : "0"),
@@ -218,11 +213,6 @@ public class DatabaseHandler {
     }
 
     public void insertTransaction(FonElement fonElement) {
-        if (!TefasParser.isFonPresent(fonElement.getName())) {
-            LogHandler.println("Olmayan bir fon girdiniz!");
-            return;
-        }
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
         String dateTime = dtf.format(LocalDateTime.now());
 
@@ -231,7 +221,7 @@ public class DatabaseHandler {
                 fonElement.getPrice(),
                 dateTime);
 
-        transactionsList.add(transactionElement);
+        transactionsList.add(0, transactionElement);
         try {
             statement.executeUpdate(transactionElement.toSqlInsertString());
         } catch (SQLException e) {

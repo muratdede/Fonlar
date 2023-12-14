@@ -10,9 +10,9 @@ public class BSignal {
         this(null);
     }
 
-    public BSignal(Object parent) {
-        if (parent != null)
-            emitOwner = parent.getClass().getName();
+    public BSignal(Object owner) {
+        if (owner != null)
+            emitOwner = owner.getClass().getName();
         else
             emitOwner = null;
     }
@@ -53,7 +53,6 @@ public class BSignal {
         if (stackTrace.length < 5)
             return null;
 
-        System.out.println(stackTrace[4].getClass().getName());
         return stackTrace[4].getClassName();
     }
 }

@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import org.fon.models.customfxml.AutoCompleteComboBox?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.presentation.total.TotalPresenter">
    <VBox prefHeight="600.0" prefWidth="1200.0" spacing="20.0">
@@ -61,7 +62,7 @@
                <VBox spacing="10.0">
                   <children>
                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="110.0" styleClass="label1" text="Fon Adı" textAlignment="CENTER" />
-                     <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="45.0" prefWidth="110.0" />
+                     <AutoCompleteComboBox fx:id="nameTextField" prefHeight="45.0" prefWidth="110.0" />
                   </children>
                   <padding>
                      <Insets bottom="20.0" top="20.0" />

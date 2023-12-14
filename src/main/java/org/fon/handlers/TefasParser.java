@@ -13,6 +13,7 @@ public class TefasParser {
     static private final Pattern graphDatePattern = Pattern.compile("xAxis: \\[\\{\"categories\":\\[.*?]");
     static private final Pattern graphPricePattern = Pattern.compile("series: \\[\\{\"name\":\"Fiyat\",\"data\":\\[.*?]");
     static private final Pattern longNamePattern = Pattern.compile("<span id=\"MainContent_FormViewMainIndicators_LabelFund\">.*?</span></h2>");
+    static private final Pattern fonListPattern = Pattern.compile("<a href='FonAnaliz\\.aspx\\?FonKod=.*?'>");
 
     public static GraphData parseGraphData(String fonName) {
         ObservableList<XYChart.Data<String, Number>> results = FXCollections.observableArrayList();
@@ -61,27 +62,24 @@ public class TefasParser {
         return new GraphData(new XYChart.Series<>(results), fonName, longFonName);
     }
 
-    public static boolean isFonPresent(String fonName) {
-        try {
-            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonName);
+    public static ObservableList<String> getFonList() {
+        ObservableList<String> result = FXCollections.observableArrayList();
 
-            Matcher longNameMatcher = longNamePattern.matcher(content);
-            if (longNameMatcher.find()) {
+        try {
+            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?");
+
+            Matcher longNameMatcher = fonListPattern.matcher(content);
+
+            while (longNameMatcher.find()) {
                 String value = longNameMatcher.group();
 
-                String longFonName = value.substring(value.lastIndexOf("<span id=\"MainContent_FormViewMainIndicators_LabelFund\">") +
-                        "<span id=\"MainContent_FormViewMainIndicators_LabelFund\">".length(), value.lastIndexOf("</span></h2>"));
-
-                if (longFonName.equalsIgnoreCase("fon")) {
-                    return false;
-                }
-            } else {
-                return false;
+                String string = value.replace("<a href='FonAnaliz.aspx?FonKod=", "").replace("'>", "");
+                result.add(string);
             }
-        } catch (IOException ignored) {
-            return false;
+        } catch (IOException e) {
+            LogHandler.printStackTrace(e);
         }
 
-        return true;
+        return result;
     }
 }

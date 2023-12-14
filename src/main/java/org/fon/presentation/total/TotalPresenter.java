@@ -15,7 +15,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.fon.handlers.DatabaseHandler;
+import org.fon.handlers.TefasParser;
 import org.fon.models.connector.BSignal;
+import org.fon.models.customfxml.AutoCompleteComboBox;
 import org.fon.models.elements.CategoryElement;
 import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
@@ -75,7 +77,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
     @FXML
     public ComboBox<String> categoryComboBox;
     @FXML
-    public TextField nameTextField;
+    public AutoCompleteComboBox nameTextField;
     @FXML
     public TextField countTextField;
     @FXML
@@ -104,6 +106,8 @@ public class TotalPresenter implements Initializable, IButtonPage {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        nameTextField.setAutoCompleteItems(TefasParser.getFonList());
+
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("HİSSE FONLARI"), "HİSSE FONLARI"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("KIYMETLİ MADENLER"), "KIYMETLİ MADENLER"));
         categoryElements.add(new CategoryElement(databaseHandler.getFonList("DEĞİŞKEN"), "DEĞİŞKEN"));
@@ -176,9 +180,9 @@ public class TotalPresenter implements Initializable, IButtonPage {
                 } catch (Exception e) {
                     return true;
                 }
-                return nameTextField.getText().isEmpty();
+                return nameTextField.getSelectionModel().getSelectedItem() == null;
             },
-            nameTextField.textProperty(),
+            nameTextField.getSelectionModel().selectedItemProperty(),
             countTextField.textProperty(),
             priceTextField.textProperty(),
             demandTextField.textProperty()
@@ -201,7 +205,7 @@ public class TotalPresenter implements Initializable, IButtonPage {
 
     public void newEntry(ActionEvent ignored) {
         FonElement fonElement = new FonElement(categoryComboBox.getSelectionModel().getSelectedItem(),
-                nameTextField.getText().toUpperCase(),
+                nameTextField.getEditor().getText().toUpperCase(),
                 Integer.parseInt(countTextField.getText()),
                 Double.parseDouble(priceTextField.getText()),
                 0.0,
