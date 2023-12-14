@@ -10,9 +10,9 @@ public class BSignal {
         this(null);
     }
 
-    public BSignal(Object parent) {
-        if (parent != null)
-            emitOwner = parent.getClass().getName();
+    public BSignal(Object owner) {
+        if (owner != null)
+            emitOwner = owner.getClass().getName();
         else
             emitOwner = null;
     }
