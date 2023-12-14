@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.fon.handlers.DatabaseHandler;
+import org.fon.models.FonPresenter;
 import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;
 
@@ -14,7 +15,7 @@ import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class KatilimPresenter implements Initializable, IButtonPage {
+public class KatilimPresenter extends FonPresenter implements Initializable, IButtonPage {
     @Inject
     DatabaseHandler databaseHandler;
 

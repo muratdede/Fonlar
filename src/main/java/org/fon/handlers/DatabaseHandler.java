@@ -75,7 +75,7 @@ public class DatabaseHandler {
                     return;
                 }
 
-                if (tmpFonElement.getCount() <= 0)
+                if (fonElement.getCount() > 0)
                     tmpFonElement.setPrice(newTotalPrice / tmpFonElement.getCount());
 
                 tmpFonElement.setDemand(Math.max(tmpFonElement.getDemand() + fonElement.getDemand(), 0));
