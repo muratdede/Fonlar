@@ -8,8 +8,7 @@
 
 <AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fon.models.customfxml.foncontroller.FonController">
    <VBox spacing="10.0">
-      <TableView fx:id="table" onMouseClicked="#onMouseDoubleCliked" prefHeight="600.0" prefWidth="1200.0"
-                 styleClass="table-view1">
+      <TableView fx:id="table" onMouseClicked="#onMouseDoubleCliked" prefHeight="600.0" prefWidth="1200.0" styleClass="table-view1">
          <placeholder>
             <Label text="Henüz fon eklenmemiş."/>
          </placeholder>

@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import org.fon.handlers.DatabaseHandler;
 import org.fon.handlers.TefasParser;
 import org.fon.models.connector.BSignal;
-import org.fon.models.customfxml.AutoCompleteComboBox;
+import org.fon.models.customfxml.autocomplete.AutoCompleteComboBox;
 import org.fon.models.elements.CategoryElement;
 import org.fon.models.elements.FonElement;
 import org.fon.models.IButtonPage;

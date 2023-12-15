@@ -1,4 +1,4 @@
-package org.fon.models.customfxml;
+package org.fon.models.customfxml.autocomplete;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +14,12 @@ public class AutoCompleteComboBox extends ComboBox<String> {
     public AutoCompleteComboBox() {
         super();
         initAutoComplete();
+        initStyle();
+    }
+
+    private void initStyle() {
         setEditable(true);
+        getStylesheets().add("/org/fon/models/customfxml/autocomplete/autocomplete.css");
     }
 
     private void initAutoComplete() {
