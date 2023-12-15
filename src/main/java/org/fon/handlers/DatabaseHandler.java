@@ -95,7 +95,7 @@ public class DatabaseHandler {
     public void updatePrices() {
         for (List<FonElement> fonElementList : fonElementListMap.values()) {
             for (FonElement fonElement : fonElementList) {
-                String pageContents = null;
+                String pageContents;
                 try {
                     pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
                 } catch (IOException e) {
@@ -106,7 +106,7 @@ public class DatabaseHandler {
                 Double price = fonElement.getTodayPrice();
                 Double percentage = fonElement.getChangePercentage();
 
-                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />.*?<span>.*?</span>");
+                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />\\s*?.*?\\s*?<span>.*?</span>");
                 Matcher priceMatcher = pricePattern.matcher(pageContents);
                 if (priceMatcher.find()) {
                     String token = priceMatcher.group();
@@ -118,7 +118,7 @@ public class DatabaseHandler {
                         continue;
                 }
 
-                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />.*?<span>%.*?</span>");
+                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />\\s*?.*?\\s*?<span>%.*?</span>");
                 Matcher percentageMatcher = percentagePattern.matcher(pageContents);
                 if (percentageMatcher.find()) {
                     String token = percentageMatcher.group();
@@ -188,7 +188,6 @@ public class DatabaseHandler {
                 fonElementListMap.put(fonCategory, fonElementList);
             } catch (SQLException e) {
                 LogHandler.printStackTrace(e);
-                continue;
             }
         }
 
