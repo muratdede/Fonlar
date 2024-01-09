@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.fon.App;
 import org.fon.handlers.GraphData;
 import org.fon.handlers.TefasParser;
 import org.fon.models.elements.FonElement;
@@ -93,6 +94,7 @@ public class FonController implements Initializable {
             ((StockChartPresenter) stockView.getPresenter()).initializeTable(graphData.getSeries());
 
             Stage stockStage = new Stage();
+            stockStage.initOwner(App.stage);
             stockStage.setScene(stockScene);
             stockStage.setTitle(graphData.getLongFonName());
             stockStage.show();
