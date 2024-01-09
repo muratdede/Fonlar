@@ -19,7 +19,7 @@ public class AutoCompleteComboBox extends ComboBox<String> {
 
     private void initStyle() {
         setEditable(true);
-        getStylesheets().add("/org/fon/models/customfxml/autocomplete/autocomplete.css");
+        getStylesheets().add(Objects.requireNonNull(getClass().getResource("autocomplete.css")).toString());
     }
 
     private void initAutoComplete() {
