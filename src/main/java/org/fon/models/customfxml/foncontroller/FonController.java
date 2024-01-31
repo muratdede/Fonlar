@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.fon.App;
 import org.fon.handlers.GraphData;
 import org.fon.handlers.TefasParser;
 import org.fon.models.elements.FonElement;
@@ -56,7 +57,7 @@ public class FonController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        name.setCellValueFactory(element -> element.getValue().nameProperty());
         count.setCellValueFactory(new PropertyValueFactory<>("count"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
@@ -67,7 +68,7 @@ public class FonController implements Initializable {
         changePercentage.setCellValueFactory(new PropertyValueFactory<>("changePercentage"));
         change.setCellValueFactory(new PropertyValueFactory<>("change"));
         demand.setCellValueFactory(new PropertyValueFactory<>("demand"));
-        lastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        lastUpdate.setCellValueFactory(element -> element.getValue().lastUpdateProperty());
     }
 
     @FXML
@@ -93,6 +94,7 @@ public class FonController implements Initializable {
             ((StockChartPresenter) stockView.getPresenter()).initializeTable(graphData.getSeries());
 
             Stage stockStage = new Stage();
+            stockStage.initOwner(App.stage);
             stockStage.setScene(stockScene);
             stockStage.setTitle(graphData.getLongFonName());
             stockStage.show();

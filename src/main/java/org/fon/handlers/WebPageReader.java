@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 public class WebPageReader {
     public static String readWebPage(String urlStr) throws IOException {
@@ -12,7 +13,7 @@ public class WebPageReader {
         URLConnection connection = url.openConnection();
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(
-                        connection.getInputStream()));
+                        connection.getInputStream(), StandardCharsets.UTF_8));
 
         StringBuilder returnValue = new StringBuilder();
 

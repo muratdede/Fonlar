@@ -11,6 +11,7 @@ import java.util.Locale;
 
 public class App extends Application {
     private static HomePresenter homePresenter = null;
+    public static Stage stage;
 
     public static void main(String[] args) {
         launch();
@@ -19,6 +20,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         Locale.setDefault(new Locale("tr", "TR"));
+
+        stage = primaryStage;
 
         Platform.setImplicitExit(true);
 

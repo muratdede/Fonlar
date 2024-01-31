@@ -7,6 +7,7 @@ public class MoneyTransactionLabel extends MoneyLabel {
 
     public MoneyTransactionLabel() {
         createColorBinding();
+        overrideTextBinding();
     }
 
     public MoneyTransactionLabel(Double initialValue) {
@@ -19,7 +20,7 @@ public class MoneyTransactionLabel extends MoneyLabel {
     private void overrideTextBinding() {
         textProperty().unbind();
 
-        textProperty().bind(Bindings.createStringBinding(() -> formatter.format(Math.abs(valueProperty.get())), valueProperty));
+        textProperty().bind(Bindings.createStringBinding(() -> moneyUnitSymbol + formatter.format(Math.abs(valueProperty.get())), valueProperty));
     }
 
     private void createColorBinding() {
