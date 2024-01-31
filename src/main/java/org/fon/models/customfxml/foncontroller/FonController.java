@@ -57,7 +57,7 @@ public class FonController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        name.setCellValueFactory(element -> element.getValue().nameProperty());
         count.setCellValueFactory(new PropertyValueFactory<>("count"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
@@ -68,7 +68,7 @@ public class FonController implements Initializable {
         changePercentage.setCellValueFactory(new PropertyValueFactory<>("changePercentage"));
         change.setCellValueFactory(new PropertyValueFactory<>("change"));
         demand.setCellValueFactory(new PropertyValueFactory<>("demand"));
-        lastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        lastUpdate.setCellValueFactory(element -> element.getValue().lastUpdateProperty());
     }
 
     @FXML
