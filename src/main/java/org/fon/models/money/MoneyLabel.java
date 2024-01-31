@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class MoneyLabel extends Label {
 
+    protected final String moneyUnitSymbol = "₺";
     protected final DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(new Locale("tr", "TR"));
     protected final DoubleProperty valueProperty = new SimpleDoubleProperty();
 
@@ -88,9 +89,9 @@ public class MoneyLabel extends Label {
         textProperty().bind(Bindings.createStringBinding(() -> {
             double value = valueProperty.get();
             if (value < 0) {
-                return "-₺" + formatter.format(-value);
+                return "-" + moneyUnitSymbol + formatter.format(-value);
             } else {
-                return "₺" + formatter.format(value);
+                return moneyUnitSymbol + formatter.format(value);
             }
         }, valueProperty));
     }
