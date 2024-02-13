@@ -17,8 +17,11 @@ import org.fon.models.elements.FonElement;
 import org.fon.presentation.stockChart.StockChartPresenter;
 import org.fon.presentation.stockChart.StockChartView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static org.fon.handlers.TefasParser.tefasFonPageUrl;
 
 public class FonController implements Initializable {
     @FXML
@@ -72,19 +75,26 @@ public class FonController implements Initializable {
     }
 
     @FXML
-    public void onMouseDoubleCliked(MouseEvent mouseEvent) {
-        if (mouseEvent.getClickCount() == 2) {
-            if (!(mouseEvent.getSource() instanceof TableView)) {
-                throw new RuntimeException("illegal mouse event call");
+    public void onMousePressed(MouseEvent mouseEvent) {
+        if (!(mouseEvent.getSource() instanceof TableView)) {
+            throw new RuntimeException("illegal mouse event call");
+        }
+
+        Object source = ((TableView<?>) mouseEvent.getSource()).getSelectionModel().getSelectedItem();
+
+        if (!(source instanceof FonElement)) {
+            throw new RuntimeException("illegal table element class");
+        }
+
+        FonElement fonElement = (FonElement) source;
+
+        if (mouseEvent.getClickCount() == 1 && mouseEvent.isControlDown()) {
+            try {
+                Runtime.getRuntime().exec("cmd /c start " + tefasFonPageUrl + fonElement.getName());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            Object source = ((TableView<?>) mouseEvent.getSource()).getSelectionModel().getSelectedItem();
-
-            if (!(source instanceof FonElement)) {
-                throw new RuntimeException("illegal table element class");
-            }
-
-            FonElement fonElement = (FonElement) source;
+        } else if (mouseEvent.getClickCount() == 2) {
 
             StockChartView stockView = new StockChartView();
             Scene stockScene = new Scene(stockView.getView());

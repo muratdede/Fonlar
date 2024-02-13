@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.fon.handlers.TefasParser.tefasFonPageUrl;
+
 public class DatabaseHandler {
     String url = "jdbc:sqlite:fons.db";
     Connection connection = null;
@@ -97,7 +99,7 @@ public class DatabaseHandler {
             for (FonElement fonElement : fonElementList) {
                 String pageContents;
                 try {
-                    pageContents = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonElement.getName());
+                    pageContents = WebPageReader.readWebPage(tefasFonPageUrl + fonElement.getName());
                 } catch (IOException e) {
                     LogHandler.printStackTrace(e);
                     continue;

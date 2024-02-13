@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TefasParser {
+    static public String tefasFonPageUrl = "https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=";
 
     static private final Pattern graphDatePattern = Pattern.compile("xAxis: \\[\\{\"categories\":\\[.*?]");
     static private final Pattern graphPricePattern = Pattern.compile("series: \\[\\{\"name\":\"Fiyat\",\"data\":\\[.*?]");
@@ -19,7 +20,7 @@ public class TefasParser {
         ObservableList<XYChart.Data<String, Number>> results;
         String longFonName;
         try {
-            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?FonKod=" + fonName);
+            String content = WebPageReader.readWebPage(tefasFonPageUrl + fonName);
 
             results = getGraphData(content);
 
@@ -79,7 +80,7 @@ public class TefasParser {
         ObservableList<String> result = FXCollections.observableArrayList();
 
         try {
-            String content = WebPageReader.readWebPage("https://www.tefas.gov.tr/FonAnaliz.aspx?");
+            String content = WebPageReader.readWebPage(tefasFonPageUrl);
 
             Matcher longNameMatcher = fonListPattern.matcher(content);
 
