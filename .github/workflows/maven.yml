@@ -22,7 +22,7 @@ jobs:
         run: mvn package --file pom.xml
 
       # List files 
-      - name: Download macOS Installer
+      - name: List files
         run: |
           cmd /c dir /s /b /o:gn
 
@@ -31,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: Fonlar.jar
-          path: "~/Desktop/${{ env.installer_name }}.${{ github.event.inputs.file }}"
+          path: "D:/a/Fonlar/Fonlar/out/Fonlar-1.2-SNAPSHOT.jar"
