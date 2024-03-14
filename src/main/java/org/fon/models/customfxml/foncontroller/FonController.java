@@ -3,8 +3,10 @@ package org.fon.models.customfxml.foncontroller;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -54,7 +56,53 @@ public class FonController implements Initializable {
     @FXML
     private TableView<FonElement> table;
 
+    /*
+    TODO:
+    Extract This Class
+    */
+    static class MyTableRow extends TableRow<FonElement> {
+        MyTableRow() {
+            setOnMouseMoved(mouseEvent -> updateCursor(mouseEvent.isControlDown()));
+            setOnMouseExited(mouseEvent -> getScene().setCursor(Cursor.DEFAULT));
+
+            setOnMouseClicked(this::handleOnMouseClicked);
+        }
+
+        private void handleOnMouseClicked(MouseEvent mouseEvent) {
+            if (mouseEvent.getClickCount() == 1 && mouseEvent.isControlDown()) {
+                try {
+                    Runtime.getRuntime().exec("cmd /c start " + tefasFonPageUrl + getItem().getName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (mouseEvent.getClickCount() == 2) {
+
+                StockChartView stockView = new StockChartView();
+                Scene stockScene = new Scene(stockView.getView());
+
+                GraphData graphData = TefasParser.parseGraphData(getItem().getName());
+
+                ((StockChartPresenter) stockView.getPresenter()).initializeTable(graphData.getSeries());
+
+                Stage stockStage = new Stage();
+                stockStage.initOwner(App.stage);
+                stockStage.setScene(stockScene);
+                stockStage.setTitle(graphData.getLongFonName());
+                stockStage.show();
+            }
+        }
+
+        void updateCursor(boolean isControlDown) {
+            if (isControlDown && (getItem() != null) && !getItem().getName().isEmpty()) {
+                getScene().setCursor(Cursor.HAND);
+            } else {
+                getScene().setCursor(Cursor.DEFAULT);
+            }
+        }
+    }
+
     public void setItems(ObservableList<FonElement> items) {
+        table.setRowFactory(param -> new MyTableRow());
         table.setItems(items);
     }
 
@@ -72,42 +120,5 @@ public class FonController implements Initializable {
         change.setCellValueFactory(new PropertyValueFactory<>("change"));
         demand.setCellValueFactory(new PropertyValueFactory<>("demand"));
         lastUpdate.setCellValueFactory(element -> element.getValue().lastUpdateProperty());
-    }
-
-    @FXML
-    public void onMousePressed(MouseEvent mouseEvent) {
-        if (!(mouseEvent.getSource() instanceof TableView)) {
-            throw new RuntimeException("illegal mouse event call");
-        }
-
-        Object source = ((TableView<?>) mouseEvent.getSource()).getSelectionModel().getSelectedItem();
-
-        if (!(source instanceof FonElement)) {
-            throw new RuntimeException("illegal table element class");
-        }
-
-        FonElement fonElement = (FonElement) source;
-
-        if (mouseEvent.getClickCount() == 1 && mouseEvent.isControlDown()) {
-            try {
-                Runtime.getRuntime().exec("cmd /c start " + tefasFonPageUrl + fonElement.getName());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (mouseEvent.getClickCount() == 2) {
-
-            StockChartView stockView = new StockChartView();
-            Scene stockScene = new Scene(stockView.getView());
-
-            GraphData graphData = TefasParser.parseGraphData(fonElement.getName());
-
-            ((StockChartPresenter) stockView.getPresenter()).initializeTable(graphData.getSeries());
-
-            Stage stockStage = new Stage();
-            stockStage.initOwner(App.stage);
-            stockStage.setScene(stockScene);
-            stockStage.setTitle(graphData.getLongFonName());
-            stockStage.show();
-        }
     }
 }
