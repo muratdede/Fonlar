@@ -20,3 +20,15 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn package --file pom.xml
+
+      # List files 
+      - name: Download macOS Installer
+        run: |
+          cmd /c dir /s /b /o:gn
+
+      # Upload Installer
+      - name: Upload Jar
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: Fonlar.jar
+          path: "~/Desktop/${{ env.installer_name }}.${{ github.event.inputs.file }}"
