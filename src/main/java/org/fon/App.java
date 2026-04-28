@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.fon.handlers.SSLDisabler;
 import org.fon.presentation.home.HomePresenter;
 import org.fon.presentation.home.HomeView;
 

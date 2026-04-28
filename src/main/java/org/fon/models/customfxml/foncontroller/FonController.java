@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static org.fon.handlers.TefasParser.tefasFonPageUrl;
-
 public class FonController implements Initializable {
     @FXML
     private AnchorPane root;
@@ -71,7 +69,7 @@ public class FonController implements Initializable {
         private void handleOnMouseClicked(MouseEvent mouseEvent) {
             if (mouseEvent.getClickCount() == 1 && mouseEvent.isControlDown()) {
                 try {
-                    Runtime.getRuntime().exec("cmd /c start " + tefasFonPageUrl + getItem().getName());
+                    Runtime.getRuntime().exec("cmd /c start " + "https://www.tefas.gov.tr/tr/fon-detayli-analiz/" + getItem().getName());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

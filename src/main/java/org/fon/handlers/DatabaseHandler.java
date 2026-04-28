@@ -3,8 +3,11 @@ package org.fon.handlers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import org.fon.models.elements.FonElement;
 import org.fon.models.elements.TransactionElement;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.*;
@@ -16,7 +19,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.fon.handlers.TefasParser.tefasFonPageUrl;
+import static org.fon.handlers.TefasParser.DEFAULT_PERIYOD;
 
 public class DatabaseHandler {
     String url = "jdbc:sqlite:fons.db";
@@ -97,47 +100,36 @@ public class DatabaseHandler {
     public void updatePrices() {
         for (List<FonElement> fonElementList : fonElementListMap.values()) {
             for (FonElement fonElement : fonElementList) {
-                String pageContents;
+                JSONObject response;
                 try {
-                    pageContents = WebPageReader.readWebPage(tefasFonPageUrl + fonElement.getName());
+                    response = TefasApiClient.fetchFonPriceData(fonElement.getName(), DEFAULT_PERIYOD);
                 } catch (IOException e) {
                     LogHandler.printStackTrace(e);
                     continue;
                 }
 
-                Double price = fonElement.getTodayPrice();
-                Double percentage = fonElement.getChangePercentage();
-
-                Pattern pricePattern = Pattern.compile("<li>Son Fiyat \\(TL\\)<br />\\s*?.*?\\s*?<span>.*?</span>");
-                Matcher priceMatcher = pricePattern.matcher(pageContents);
-                if (priceMatcher.find()) {
-                    String token = priceMatcher.group();
-                    String valueStr = token.substring(token.lastIndexOf("<span>") + 6, token.lastIndexOf("</span>"));
-
-                    price = Double.parseDouble(valueStr.replace(',', '.'));
-
-                    if (price <= 0)
-                        continue;
+                JSONArray resultList = response.getJSONArray("resultList");
+                if (resultList.isEmpty()) {
+                    throw new RuntimeException("API'den veri alınamadı: " + fonElement.getName());
                 }
 
-                Pattern percentagePattern = Pattern.compile("Getiri \\(%\\)<br />\\s*?.*?\\s*?<span>%.*?</span>");
-                Matcher percentageMatcher = percentagePattern.matcher(pageContents);
-                if (percentageMatcher.find()) {
-                    String token = percentageMatcher.group();
-                    String valueStr = token.substring(token.lastIndexOf("<span>%") + 7, token.lastIndexOf("</span>"));
+                JSONObject todayObject = resultList.getJSONObject(0);
+                JSONObject yesterdayObject = resultList.getJSONObject(0);
 
-                    percentage = Double.parseDouble(valueStr.replace(',', '.'));
+                double todayPrice = todayObject.getDouble("fiyat");
+                if (todayPrice <= 0.0) {
+                    continue;
                 }
 
-                Double finalPrice = price;
-                Double finalPercentage = percentage;
+                double yesterdayPrice = yesterdayObject.getDouble("fiyat");
+                double changePercentage = (todayPrice - yesterdayPrice) / yesterdayPrice;
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy");
                 String dateTime = dtf.format(LocalDateTime.now());
 
                 Platform.runLater(() -> {
-                    fonElement.setTodayPrice(finalPrice);
-                    fonElement.setChangePercentage(finalPercentage);
+                    fonElement.setTodayPrice(todayPrice);
+                    fonElement.setChangePercentage(changePercentage);
                     fonElement.setLastUpdate(dateTime);
                     new Thread(()-> updateFon(fonElement)).start();
                 });
